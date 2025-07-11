@@ -23,7 +23,7 @@ public class MenuPrincipal extends JFrame implements ActionListener
     private JMenuItem novoFuncionarioItem, editarFuncionarioItem, eliminarFuncionarioItem, listagemFuncionarioItem,
     pesquisarFuncionarioItem;
     private JMenuItem novoServicoItem, editarServicoItem, eliminarServicoItem, listagemServicoItem,
-    pesqusarServicoItem;
+    pesquisarServicoItem;
     private JMenuItem novoPagamentoItem, editarPagamentoItem, eliminarPagamentoItem, listagemPagamentoItem,
     pesquisarPagamentoItem;
     private JMenuItem novoAgendamentoItem, editarAgendamentoItem, eliminarAgendamentoItem, listagemAgendamentoItem,
@@ -123,7 +123,7 @@ public class MenuPrincipal extends JFrame implements ActionListener
         listagemMenu.add(pesquisarFuncionarioItem = new JMenuItem("Pesquisa de Funcionarios"));
         listagemMenu.addSeparator();
         listagemMenu.add(listagemServicoItem = new JMenuItem("Listar Servicos"));
-        listagemMenu.add(pesqusarServicoItem = new JMenuItem("Pesquisa de Servicos"));
+        listagemMenu.add(pesquisarServicoItem = new JMenuItem("Pesquisa de Servicos"));
         listagemMenu.addSeparator();
         listagemMenu.add(listagemPagamentoItem = new JMenuItem("Listagem de Pagamentos"));
         listagemMenu.add(pesquisarPagamentoItem = new JMenuItem("Pesquisa de Pagamentos"));
@@ -151,7 +151,7 @@ public class MenuPrincipal extends JFrame implements ActionListener
         editarServicoItem.addActionListener(this);
         eliminarServicoItem.addActionListener(this);
         listagemServicoItem.addActionListener(this);
-        pesqusarServicoItem.addActionListener(this);
+        pesquisarServicoItem.addActionListener(this);
 
         // adicionar evento no  pagamento
         novoPagamentoItem.addActionListener(this);
@@ -199,6 +199,16 @@ public class MenuPrincipal extends JFrame implements ActionListener
             new EditarFuncionario();
         else if(event.getSource() == eliminarFuncionarioItem)
             new EliminarFuncionario();
+        else if(event.getSource() == novoServicoItem)
+            new ServicoVisao(false, new ServicoModelo());
+        else if(event.getSource() == listagemServicoItem)
+            ServicoFile.listarServicos();
+        else if(event.getSource() == pesquisarServicoItem)
+            new PesquisarServico();
+        else if(event.getSource() == editarServicoItem)
+            new EditarServico();
+        else if(event.getSource() == eliminarServicoItem)
+            new EliminarServico();
         else if(event.getSource() == nacionalidadeItem)
             Tabela2.editarNovosItems("Nacionalidades.tab", "Nova Nacionalidade");
         else if(event.getSource() == metodoPagamentoItem)

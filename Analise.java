@@ -50,7 +50,7 @@ e serviços oferecidos.
 	double preco
 	int duracaoMinutos
 	String descricao
-	boolean ativo
+	boolean status
 
 - AgendamentoModelo
 	int id
@@ -59,7 +59,8 @@ e serviços oferecidos.
 	ServicoModelo servico
 	String dataAgendamento
 	String horaAgendamento
-	String status // Agendado, Concluído, Cancelado
+	String estado // Agendado, Concluído, Cancelado
+	boolean status
 
 - PagamentoModelo
 	int id
@@ -85,7 +86,6 @@ e serviços oferecidos.
 - TiposServico.tab
 
 6. Listagens e Pesquisas
-
 - Listagem geral de Clientes
 - Listagem geral de Agendamentos
 - Pesquisa de Cliente por Nome
