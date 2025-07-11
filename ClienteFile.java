@@ -135,12 +135,170 @@ class ClienteFile extends ObjectsFile
             area.setText(dados);
             area.setFocusable(false);
             JOptionPane.showMessageDialog(null, new JScrollPane(area),
-            "Gestao de Consultorio Medico", JOptionPane.INFORMATION_MESSAGE);
+            "Gestao de Barbearia", JOptionPane.INFORMATION_MESSAGE);
         }
         catch(IOException ex)
         {
             ex.printStackTrace();
         }
+    }
+
+	public static StringVector getAllNames()
+    {
+        ClienteFile file = new ClienteFile();
+        ClienteModelo modelo = new ClienteModelo();
+        StringVector vetor = new StringVector();
+
+        try
+        {
+            file.stream.seek(4);
+
+            for(int i = 0; i < file.getNregistos(); i++)
+            {
+                modelo.read(file.stream);
+
+                if(modelo.getStatus() == true)
+                    vetor.add(modelo.getNome());
+            }
+            
+            vetor.sort();    
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        return vetor;
+    }
+
+	public static int pesquisarPorId(int idProcurado)
+    {
+        ClienteFile file = new ClienteFile();
+        ClienteModelo modelo = new ClienteModelo();
+
+        String dados = "Listagem de Dados do Ficheiro \n\n";
+
+        try
+        {
+            file.stream.seek(4);
+
+            for(int i = 0; i < file.getNregistos(); i++)
+            {
+                modelo.read(file.stream);
+
+                if(modelo.getId() == idProcurado && modelo.getStatus() == true)
+                {
+                    JOptionPane.showMessageDialog(null, modelo.toString());
+                    return 0;
+                }
+            }
+               JOptionPane.showMessageDialog(null, "Erro, id nao encontrado", 
+                    "File Not Found", JOptionPane.ERROR_MESSAGE);
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        return idProcurado;
+    }
+
+    public static void pesquisarPorNome(String nomeProcurado)
+    {
+        ClienteFile file = new ClienteFile();
+        ClienteModelo modelo = new ClienteModelo();
+
+        String dados = "Listagem de Dados do Ficheiro \n\n";
+
+        try
+        {
+            file.stream.seek(4);
+
+            for(int i = 0; i < file.getNregistos(); i++)
+            {
+                modelo.read(file.stream);
+
+                if(modelo.getNome().equalsIgnoreCase(nomeProcurado) && modelo.getStatus() == true)
+                {
+                    JOptionPane.showMessageDialog(null, modelo.toString());
+                    return;
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null, "Erro, nome nao encontrado", 
+                    "File Not Found", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+
+    // metodo de pesquisa para edicao
+    public static ClienteModelo getPesquisaPorId(int idProcurado)
+    {
+        ClienteFile file = new ClienteFile();
+        ClienteModelo modelo = new ClienteModelo();
+
+        String dados = "Listagem de Dados do Ficheiro \n\n";
+
+        try
+        {
+            file.stream.seek(4);
+
+            for(int i = 0; i < file.getNregistos(); i++)
+            {
+                modelo.read(file.stream);
+
+                if(modelo.getId() == idProcurado && modelo.getStatus() == true)
+                {
+                    JOptionPane.showMessageDialog(null, modelo.toString());
+                    return modelo;
+                }
+            }
+               JOptionPane.showMessageDialog(null, "Erro, id nao encontrado", 
+                    "File Not Found", JOptionPane.ERROR_MESSAGE);
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        return modelo;
+    }
+
+    // getPesquisarPorNome
+    public static ClienteModelo getNomeProcurado(String nomeProcurado)
+    {
+        ClienteFile file = new ClienteFile();
+        ClienteModelo modelo = new ClienteModelo();
+
+        String dados = "Listagem de Dados do Ficheiro \n\n";
+
+        try
+        {
+            file.stream.seek(4);
+
+            for(int i = 0; i < file.getNregistos(); i++)
+            {
+                modelo.read(file.stream);
+
+                if(modelo.getNome().equalsIgnoreCase(nomeProcurado) && modelo.getStatus() == true)
+                {
+                    JOptionPane.showMessageDialog(null, modelo.toString());
+                    return modelo;
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null, "Erro, nome nao encontrado", 
+                    "File Not Found", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        return modelo;
     }
 
 }

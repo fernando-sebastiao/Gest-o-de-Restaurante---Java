@@ -89,6 +89,7 @@ e serviços oferecidos.
 - Listagem geral de Clientes
 - Listagem geral de Agendamentos
 - Pesquisa de Cliente por Nome
+- Pesquisa de Cliente por Id
 - Pesquisa de Agendamentos por Data
 
 7. Diversos

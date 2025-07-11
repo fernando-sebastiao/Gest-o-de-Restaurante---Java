@@ -15,15 +15,24 @@ import java.io.*;
 
 public class ClienteVisao extends JFrame 
 {
-    PainelCentro centro;
-    PainelSul sul;
+    private PainelCentro centro;
+    private PainelSul sul;
+    private boolean editar;
 
-    public ClienteVisao()
+    public ClienteVisao(boolean alterar, ClienteModelo modelo)
     {
         super("Cliente Visao");
+    
+        editar = alterar;
 
-        getContentPane().add(centro = new PainelCentro(), BorderLayout.CENTER);
-        getContentPane().add(sul = new PainelSul(), BorderLayout.SOUTH);
+        definirTema();
+        if(!alterar)
+        {
+            	getContentPane().add(centro = new PainelCentro(), BorderLayout.CENTER);
+        }
+        else
+            getContentPane().add(centro = new PainelCentro(modelo), BorderLayout.CENTER);
+         getContentPane().add(sul = new PainelSul(), BorderLayout.SOUTH);
 
         setSize(400, 300);
         setVisible(true);
@@ -36,14 +45,19 @@ public class ClienteVisao extends JFrame
         private JComboBox generoJCB, nacionalidadeJCB, provinciaJCB, municipioJCB, comunaJCB;
         private JComboBoxTabela3_Tabela3 provinciaComMunicipio;
         private String[] arrayGenero = {"Masculino", "Feminino"};
+        private ClienteFile file;
+
         public PainelCentro()
         {
             setLayout(new GridLayout(8, 2));
             provinciaComMunicipio = new JComboBoxTabela3_Tabela3("Provincias.tab", "Municipios.tab", "Comunas.tab");
+            file = new ClienteFile();
 
             // 1º linha
             add(new JLabel("Id"));
             add(idJTF = new JTextField());
+            idJTF.setText("000" + file.getProximoCodigo());
+            idJTF.setFocusable(false);
 
             // 2º linha
             add(new JLabel("Nome"));
@@ -72,6 +86,56 @@ public class ClienteVisao extends JFrame
             // 8º liha
             add(new JLabel("Comuna"));
             add(comunaJCB = provinciaComMunicipio.getComboBoxNeto());
+        }
+
+        public PainelCentro(ClienteModelo modelo)
+        {
+            setLayout(new GridLayout(8, 2));
+            provinciaComMunicipio = new JComboBoxTabela3_Tabela3("Provincias.tab", "Municipios.tab", "Comunas.tab");
+            file = new ClienteFile();
+
+            // 1º linha
+            add(new JLabel("Id"));
+            add(idJTF = new JTextField());
+            idJTF.setText("000" + file.getProximoCodigo());
+            idJTF.setText("" + modelo.getId());
+            idJTF.setFocusable(false);
+
+
+            // 2º linha
+            add(new JLabel("Nome"));
+            add(nomeJTF = new JTextField());
+            nomeJTF.setText(modelo.getNome());
+
+            // 3º linha 
+            add(new JLabel("Contacto"));
+            add(contactoJTF = new JTextField());
+            contactoJTF.setText(modelo.getContacto());
+
+            // 4º linha
+            add(new JLabel("Genero"));
+            add(generoJCB = new JComboBox(arrayGenero));
+            generoJCB.setSelectedItem(modelo.getGenero());
+
+            // 5º linha
+            add(new JLabel("Nacionalidade"));
+            add(nacionalidadeJCB = UInterfaceBox.createJComboBoxsTabela2("Nacionalidades.tab"));
+            nacionalidadeJCB.setSelectedItem(modelo.getNacionalidade());
+
+            // 6º linha
+            add(new JLabel("Provincia"));
+            add(provinciaJCB = provinciaComMunicipio.getComboBoxFather());
+            provinciaJCB.setSelectedItem(modelo.getProvincia());
+
+            // 7º linha
+            add(new JLabel("Municipio"));
+            add(municipioJCB = provinciaComMunicipio.getComboBoxSun());
+            municipioJCB.setSelectedItem(modelo.getMunicipio());
+
+            // 8º liha
+            add(new JLabel("Comuna"));
+            add(comunaJCB = provinciaComMunicipio.getComboBoxNeto());
+            comunaJCB.setSelectedItem(modelo.getComuna());
         }
 
         // metodos getters
@@ -173,6 +237,24 @@ public class ClienteVisao extends JFrame
             JOptionPane.showMessageDialog(null, modelo.toString());
             modelo.salvar();
         }
+
+        // metodo alterar
+        public void alterar()
+        {
+            ClienteModelo modelo = new ClienteModelo(
+            getId(),
+            getNome(),
+            getContacto(), 
+            getGenero(),
+            getNacionalidade(),
+            getProvincia(),
+            getMunicipio(),
+            getComuna(),
+            true);
+
+            JOptionPane.showMessageDialog(null, modelo.toString());
+            modelo.salvarDados();
+        }
     }
 
     class PainelSul extends JPanel implements ActionListener
@@ -200,11 +282,10 @@ public class ClienteVisao extends JFrame
         {
             if(event.getSource() == salvarJBT)
             {
-               centro.salvar();
-                /* if(editar)
+                if(editar)
                     centro.alterar();
                 else
-                    centro.salvar(); */
+                    centro.salvar(); 
             }
             else
                 dispose();
@@ -233,6 +314,6 @@ public class ClienteVisao extends JFrame
     public static void main(String[] args)
     {
         Vector_Tabelas.inic();
-        new ClienteVisao();
+        new ClienteVisao(false, new ClienteModelo());
     }
 }

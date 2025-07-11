@@ -2,9 +2,10 @@
 Tema: Gestão de uma Barbearia
 Nome: Enio Manuel
 Numero: 2817
-Ficheiro: EliminarCliente.java
+Ficheiro: PesquisarCliente.java
 Data: 11.07.2025
 --------------------------------------*/
+
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
@@ -12,14 +13,14 @@ import SwingComponents.*;
 import Calendario.*;
 import javax.swing.UIManager.*;
 
-public class EliminarCliente extends JFrame
+public class PesquisarCliente extends JFrame
 {
     private PainelCentro centro;
     private PainelSul sul;
     
-    public EliminarCliente()
+    public PesquisarCliente()
     {
-        super("Pesquisas do Cliente para Eliminar");
+        super("Pesquisas do Cliente");
 
         getContentPane().add(centro = new PainelCentro(), BorderLayout.CENTER);
         getContentPane().add(sul = new PainelSul(), BorderLayout.SOUTH);
@@ -110,43 +111,10 @@ public class EliminarCliente extends JFrame
         {
             if(event.getSource() == pesquisarJB)
             {    
-                ClienteModelo modelo;
                 if(centro.getTipoPesquisa() == 1)
-                {
-                    modelo = ClienteFile.getPesquisaPorId(centro.getIdProcurado());
-
-                    JOptionPane.showMessageDialog(null, modelo.toString());
-
-                    int opcao = JOptionPane.showConfirmDialog(null, "Tem a certeza que deseja eliminar esse dado?");
-
-                    if(opcao == JOptionPane.YES_OPTION)
-                    {
-                        // eliminar dados
-                        modelo.setStatus(false);
-
-                        new ClienteFile().eliminarDados(modelo);
-                        dispose();
-                    }
-                    else    
-                        JOptionPane.showMessageDialog(null, "Operacao Interrompida por ordem do operador");
-                }
-                    
+                    ClienteFile.pesquisarPorId(centro.getIdProcurado());
                 else if(centro.getTipoPesquisa() == 2)
-                {    
-                    modelo = ClienteFile.getNomeProcurado(centro.getNomeProcurado());
-                    int opcao = JOptionPane.showConfirmDialog(null, "Tem a certeza que deseja eliminar esse dado?");
-
-                    if(opcao == JOptionPane.YES_OPTION)
-                    {
-                        // eliminar dados
-                        modelo.setStatus(false);
-
-                        new ClienteFile().eliminarDados(modelo);
-                        dispose();
-                    }
-                    else    
-                        JOptionPane.showMessageDialog(null, "Operacao Interrompida por ordem do operador");
-                }
+                    ClienteFile.pesquisarPorNome(centro.getNomeProcurado());
             }
             else 
                 dispose();

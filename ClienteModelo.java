@@ -151,7 +151,7 @@ public class ClienteModelo implements RegistGeneric
         dados += "Provincia: " + getProvincia() + "\n";
         dados += "Municipio: " + getMunicipio() + "\n";
         dados += "Comuna: " + getComuna() + "\n";
-        dados += "GetStaus: " + getStatus() + "\n";
+        dados += "Status: " + getStatus() + "\n";
 
         return dados;
     }

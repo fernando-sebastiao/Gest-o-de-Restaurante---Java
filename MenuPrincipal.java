@@ -39,7 +39,8 @@ public class MenuPrincipal extends JFrame implements ActionListener
 
         setJMenuBar(menuBar);
 
-        setSize(800, 600);
+        //pack();
+        setSize(900, 600);
         setLocationRelativeTo(null);
         setVisible(true);
     }
@@ -51,53 +52,59 @@ public class MenuPrincipal extends JFrame implements ActionListener
 
         // instanciando os Menus
         menuBar.add(clienteMenu = new JMenu("Clientes"));
+        clienteMenu.setIcon(new ImageIcon("image/funcionario32.png"));
         clienteMenu.setMnemonic('C');
         menuBar.add(funcionarioMenu = new JMenu("Funcionarios"));
+        funcionarioMenu.setIcon(new ImageIcon("image/funcionario.png"));
         funcionarioMenu.setMnemonic('F');
         menuBar.add(servicoMenu = new JMenu("Servicos"));
         servicoMenu.setMnemonic('S');
         menuBar.add(pagamentoMenu = new JMenu("Pagamentos"));
+        pagamentoMenu.setIcon(new ImageIcon("pagar.png"));
         pagamentoMenu.setMnemonic('P');
         menuBar.add(agendamentoMenu = new JMenu("Agendamentos"));
         agendamentoMenu.setMnemonic('A');
         menuBar.add(listagemMenu = new JMenu("Listagem/Pesquisas"));
+        listagemMenu.setIcon(new ImageIcon("image/search32.png"));
         listagemMenu.setMnemonic('L'); 
         menuBar.add(tabelaMenu = new JMenu("Tabelas"));
+        tabelaMenu.setIcon(new ImageIcon("image/tabela.png"));
         tabelaMenu.setMnemonic('T');
         menuBar.add(ajudaMenu = new JMenu("Ajuda"));
+        ajudaMenu.setIcon( new ImageIcon("image/help.png"));
         ajudaMenu.setMnemonic('A');
 
         // instanciando os elementos do menuCliente
-        clienteMenu.add(novoClienteItem = new JMenuItem("Novo Cliente"));
+        clienteMenu.add(novoClienteItem = new JMenuItem("Novo Cliente", new ImageIcon("image/novo24.png")));
         novoClienteItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_MASK));
-        clienteMenu.add(editarClienteItem = new JMenuItem("Editar Cliente"));
-        clienteMenu.add(eliminarClienteItem = new JMenuItem("Eliminar CLiente"));
+        clienteMenu.add(editarClienteItem = new JMenuItem("Editar Cliente", new ImageIcon("image/edit24.png")));
+        clienteMenu.add(eliminarClienteItem = new JMenuItem("Eliminar CLiente", new ImageIcon("image/delete24.png")));
         clienteMenu.addSeparator();
         clienteMenu.add(sairItem = new JMenuItem("Sair"));
 
         // instanciando os elementos do funcionarioMenu
-        funcionarioMenu.add(novoFuncionarioItem = new JMenuItem("Novo Funcionario"));
+        funcionarioMenu.add(novoFuncionarioItem = new JMenuItem("Novo Funcionario", new ImageIcon("image/novo24.png")));
         novoFuncionarioItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_MASK));
-        funcionarioMenu.add(editarFuncionarioItem = new JMenuItem("Editar Funcionario"));
-        funcionarioMenu.add(eliminarFuncionarioItem = new JMenuItem("Eliminar Funcionario"));
+        funcionarioMenu.add(editarFuncionarioItem = new JMenuItem("Editar Funcionario", new ImageIcon("image/edit24.png")));
+        funcionarioMenu.add(eliminarFuncionarioItem = new JMenuItem("Eliminar Funcionario", new ImageIcon("image/delete24.png")));
 
         // instanciando os elementos do servicoMenu
-        servicoMenu.add(novoServicoItem = new JMenuItem("Novo Servico"));
+        servicoMenu.add(novoServicoItem = new JMenuItem("Novo Servico", new ImageIcon("image/novo24.png")));
         novoServicoItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
-        servicoMenu.add(editarServicoItem = new JMenuItem("Editar Servico"));
-        servicoMenu.add(eliminarServicoItem = new JMenuItem("Eliminar Servico"));
+        servicoMenu.add(editarServicoItem = new JMenuItem("Editar Servico", new ImageIcon("image/edit24.png")));
+        servicoMenu.add(eliminarServicoItem = new JMenuItem("Eliminar Servico", new ImageIcon("image/delete24.png")));
 
         // instanciando os elementos do pagamentoMenu
-        pagamentoMenu.add(novoPagamentoItem = new JMenuItem("Novo Pagamento"));
+        pagamentoMenu.add(novoPagamentoItem = new JMenuItem("Novo Pagamento", new ImageIcon("image/novo24.png")));
         novoPagamentoItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.CTRL_MASK));
-        pagamentoMenu.add(editarPagamentoItem = new JMenuItem("Editar Pagamento"));
-        pagamentoMenu.add(eliminarPagamentoItem = new JMenuItem("EliminarPagamento"));
+        pagamentoMenu.add(editarPagamentoItem = new JMenuItem("Editar Pagamento", new ImageIcon("image/edit24.png")));
+        pagamentoMenu.add(eliminarPagamentoItem = new JMenuItem("EliminarPagamento", new ImageIcon("image/delete24.png")));
 
         // instanciando os elementos agendamento
-        agendamentoMenu.add(novoAgendamentoItem = new JMenuItem("Novo Agendamento"));
+        agendamentoMenu.add(novoAgendamentoItem = new JMenuItem("Novo Agendamento", new ImageIcon("image/novo24.png")));
         novoAgendamentoItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_MASK));
-        agendamentoMenu.add(editarAgendamentoItem = new JMenuItem("Editar Agendamento"));
-        agendamentoMenu.add(eliminarAgendamentoItem = new JMenuItem("Eliminar Agendamento"));
+        agendamentoMenu.add(editarAgendamentoItem = new JMenuItem("Editar Agendamento", new ImageIcon("image/edit24.png")));
+        agendamentoMenu.add(eliminarAgendamentoItem = new JMenuItem("Eliminar Agendamento", new ImageIcon("image/delete24.png")));
 
         // instanciando os elementos do tabelaMenu
         tabelaMenu.add(nacionalidadeItem = new JMenuItem("Nacionalidades"));
@@ -173,15 +180,23 @@ public class MenuPrincipal extends JFrame implements ActionListener
     public void actionPerformed(ActionEvent event)
     {
         if(event.getSource() == novoClienteItem)
-            new ClienteVisao();
+            new ClienteVisao(false, new ClienteModelo());
         else if(event.getSource() == listagemClienteItem)
             ClienteFile.listarClientes();
+        else if(event.getSource() == pesquisarClienteItem)
+            new PesquisarCliente();
+        else if(event.getSource() == editarClienteItem)
+            new EditarCliente();
+        else if(event.getSource() == eliminarClienteItem)
+            new EliminarCliente();
         else if(event.getSource() == nacionalidadeItem)
             Tabela2.editarNovosItems("Nacionalidades.tab", "Nova Nacionalidade");
         else if(event.getSource() == metodoPagamentoItem)
             Tabela2.editarNovosItems("MetodoPagamento.tab", "Novo Metodo de Pagamento");
         else if(event.getSource() == especialidadeItem)
             Tabela2.editarNovosItems("Especialidades.tab", "Nova Especialidade");
+        else if(event.getSource() == tipoDeServicoItem)
+            Tabela2.editarNovosItems("TiposServico.tab", "Novo Tipo de Servico");
         else if(event.getSource() == provinciaItem)
             Tabela2.editarNovosItems("Provincias.tab", "Nova Provincia");
         else if(event.getSource() == municipioItem)
@@ -190,8 +205,6 @@ public class MenuPrincipal extends JFrame implements ActionListener
         else if(event.getSource() == comunaItem)
             Tabela3_3.editarNovosItems("Provincias.tab", "Municipios.tab", "Comunas.tab", 
             "Provincia", "Municipio", "Comuna", "Nova Comuna");
-        else
-            dispose();
     }
 
     public static void main(String[] args)
