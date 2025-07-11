@@ -216,7 +216,7 @@ class ClienteFile extends ObjectsFile
             {
                 modelo.read(file.stream);
 
-                if(modelo.getNome().equalsIgnoreCase(nomeProcurado) && modelo.getStatus() == true)
+                if((modelo.getNome().equalsIgnoreCase(nomeProcurado)) && (modelo.getStatus() == true))
                 {
                     JOptionPane.showMessageDialog(null, modelo.toString());
                     return;
@@ -250,7 +250,7 @@ class ClienteFile extends ObjectsFile
             {
                 modelo.read(file.stream);
 
-                if(modelo.getId() == idProcurado && modelo.getStatus() == true)
+                if((modelo.getId() == idProcurado) && (modelo.getStatus() == true))
                 {
                     JOptionPane.showMessageDialog(null, modelo.toString());
                     return modelo;
@@ -282,7 +282,7 @@ class ClienteFile extends ObjectsFile
             {
                 modelo.read(file.stream);
 
-                if(modelo.getNome().equalsIgnoreCase(nomeProcurado) && modelo.getStatus() == true)
+                if((modelo.getNome().equalsIgnoreCase(nomeProcurado)) && (modelo.getStatus() == true))
                 {
                     JOptionPane.showMessageDialog(null, modelo.toString());
                     return modelo;
