@@ -2,8 +2,8 @@
 Tema: Gestão de uma Barbearia
 Nome: Enio Manuel
 Numero: 2817
-Ficheiro: EliminarServico.java
-Data: 11.07.2025
+Ficheiro:EliminarAgendamento.java
+Data: 12.07.2025
 --------------------------------------*/
 import javax.swing.*;
 import java.awt.event.*;
@@ -12,14 +12,14 @@ import SwingComponents.*;
 import Calendario.*;
 import javax.swing.UIManager.*;
 
-public class EliminarServico extends JFrame
+public class EliminarAgendamento extends JFrame
 {
     private PainelCentro centro;
     private PainelSul sul;
     
-    public EliminarServico()
+    public EliminarAgendamento()
     {
-        super("Pesquisas do Servico para Eliminar");
+        super("Pesquisas do Agendamento para Eliminar");
 
         getContentPane().add(centro = new PainelCentro(), BorderLayout.CENTER);
         getContentPane().add(sul = new PainelSul(), BorderLayout.SOUTH);
@@ -32,8 +32,8 @@ public class EliminarServico extends JFrame
     class PainelCentro extends JPanel implements ActionListener
     {
 
-        private JTextField  duracaoMinutosJTF, nomeServicoJTF;
-        private JRadioButton pesquisarPorDuracao, pesquisarPorNomeDoServico;
+        private JTextField  idJTF, dataJTF;
+        private JRadioButton pesquisarPorId, pesquisarPorData;
         private ButtonGroup grupo;
     
         public PainelCentro()
@@ -42,37 +42,37 @@ public class EliminarServico extends JFrame
             
             grupo = new ButtonGroup();
 
-            add(pesquisarPorDuracao = new JRadioButton("Pesquisa Por Duracao de Tempo"));
-            add(pesquisarPorNomeDoServico = new JRadioButton("Pesquisa Por Nome do Servico"));
+            add(pesquisarPorId = new JRadioButton("Pesquisa Por Id"));
+            add(pesquisarPorData = new JRadioButton("Pesquisa Por Data"));
 
-            grupo.add(pesquisarPorDuracao);
-            grupo.add(pesquisarPorNomeDoServico);
+            grupo.add(pesquisarPorId);
+            grupo.add(pesquisarPorData);
             
-            add(new JLabel("Digite o tempo de Minutos Procurado"));
-            add(duracaoMinutosJTF = new JTextField());
-            duracaoMinutosJTF.setEnabled(false);
+            add(new JLabel("Digite o Id Procurado"));
+            add(idJTF = new JTextField());
+            idJTF.setEnabled(false);
             
-            add(new JLabel("Digite o Nome do Servico Procurado"));
-            add(nomeServicoJTF = new JTextField());
-            nomeServicoJTF.setEnabled(false);
+            add(new JLabel("Digite a Data Procurada"));
+            add(dataJTF = new JTextField());
+            dataJTF.setEnabled(false);
             
-            pesquisarPorDuracao.addActionListener(this);
-            pesquisarPorNomeDoServico.addActionListener(this);
+            pesquisarPorId.addActionListener(this);
+            pesquisarPorData.addActionListener(this);
         }
 
-        public int getDuracaoProcurada() 
+        public int getIdProcurado() 
         {
-            return Integer.parseInt(duracaoMinutosJTF.getText().trim());
+            return Integer.parseInt(idJTF.getText().trim());
         }
 
-        public String getNomeServicoProcurado()
+        public String getDataProcurada()
         {
-            return nomeServicoJTF.getText().trim();
+            return dataJTF.getText().trim();
         }
 
         public int getTipoPesquisa()
         {
-            if(pesquisarPorDuracao.isSelected())
+            if(pesquisarPorId.isSelected())
                 return 1;
             else 
                 return 2;
@@ -80,15 +80,15 @@ public class EliminarServico extends JFrame
 
         public void actionPerformed(ActionEvent event)
         {
-            if(event.getSource() == pesquisarPorDuracao)
+            if(event.getSource() == pesquisarPorId)
             {
-                duracaoMinutosJTF.setEnabled(true);
-                nomeServicoJTF.setEnabled(false);
+                idJTF.setEnabled(true);
+                dataJTF.setEnabled(false);
             }
-            else if(event.getSource() == pesquisarPorNomeDoServico)
+            else if(event.getSource() == pesquisarPorData)
             {
-                duracaoMinutosJTF.setEnabled(false);
-                nomeServicoJTF.setEnabled(true);
+                idJTF.setEnabled(false);
+                dataJTF.setEnabled(true);
             }
         }
     }
@@ -108,12 +108,31 @@ public class EliminarServico extends JFrame
 
         public void actionPerformed(ActionEvent event)
         {
-            ServicoModelo modelo;
+            AgendamentoModelo modelo;
             if(event.getSource() == pesquisarJB)
             {    
                 if(centro.getTipoPesquisa() == 1)
                 {
-                    modelo = ServicoFile.getPesquisaPorDuracao(centro.getDuracaoProcurada());
+                   modelo = AgendamentoFile.getPesquisaPorId(centro.getIdProcurado());
+                   
+                   JOptionPane.showMessageDialog(null, modelo.toString());
+
+                    int opcao = JOptionPane.showConfirmDialog(null, "Tem a certeza que deseja eliminar esse dado?");
+
+                    if(opcao == JOptionPane.YES_OPTION)
+                    {
+                        // eliminar dados
+                        modelo.setStatus(false);
+
+                        new AgendamentoFile().eliminarDados(modelo);
+                        dispose();
+                    }
+                    else    
+                        JOptionPane.showMessageDialog(null, "Operacao Interrompida por ordem do operador");
+                }
+                else if(centro.getTipoPesquisa() == 2)
+                {
+                    modelo = AgendamentoFile.getPesquisaPorData(centro.getDataProcurada());
                     
                     JOptionPane.showMessageDialog(null, modelo.toString());
 
@@ -124,24 +143,7 @@ public class EliminarServico extends JFrame
                         // eliminar dados
                         modelo.setStatus(false);
 
-                        new ServicoFile().eliminarDados(modelo);
-                        dispose();
-                    }
-                    else    
-                        JOptionPane.showMessageDialog(null, "Operacao Interrompida por ordem do operador");
-                }
-                else if(centro.getTipoPesquisa() == 2)
-                {    
-                    modelo = ServicoFile.getNomeServicoProcurado(centro.getNomeServicoProcurado());
-                    
-                    int opcao = JOptionPane.showConfirmDialog(null, "Tem a certeza que deseja eliminar esse dado?");
-
-                    if(opcao == JOptionPane.YES_OPTION)
-                    {
-                        // eliminar dados
-                        modelo.setStatus(false);
-
-                        new ServicoFile().eliminarDados(modelo);
+                        new AgendamentoFile().eliminarDados(modelo);
                         dispose();
                     }
                     else    

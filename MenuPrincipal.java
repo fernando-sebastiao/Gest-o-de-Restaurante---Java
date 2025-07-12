@@ -116,7 +116,7 @@ public class MenuPrincipal extends JFrame implements ActionListener
         tabelaMenu.add(metodoPagamentoItem = new JMenuItem("Metodos de Pagamento"));
 
         // instanciando os elementos da listagem
-        listagemMenu.add(listagemClienteItem = new JMenuItem("Listar CLientes"));
+        listagemMenu.add(listagemClienteItem = new JMenuItem("Listar Clientes"));
         listagemMenu.add(pesquisarClienteItem = new JMenuItem("Pesquisa de Clientes"));
         listagemMenu.addSeparator();
         listagemMenu.add(listagemFuncionarioItem = new JMenuItem("Listar Funcionarios"));
@@ -162,10 +162,10 @@ public class MenuPrincipal extends JFrame implements ActionListener
 
         // adicionar evento no agendamento
         novoAgendamentoItem.addActionListener(this);
-        editarPagamentoItem.addActionListener(this);
-        eliminarPagamentoItem.addActionListener(this);
-        listagemPagamentoItem.addActionListener(this);
-        pesquisarPagamentoItem.addActionListener(this);
+        editarAgendamentoItem.addActionListener(this);
+        eliminarAgendamentoItem.addActionListener(this);
+        listagemAgendamentoItem.addActionListener(this);
+        pesquisarAgendamentoItem.addActionListener(this);
         
         // adicionando eventos no elementos da tabela
         nacionalidadeItem.addActionListener(this);
@@ -209,6 +209,26 @@ public class MenuPrincipal extends JFrame implements ActionListener
             new EditarServico();
         else if(event.getSource() == eliminarServicoItem)
             new EliminarServico();
+        else if(event.getSource() == novoPagamentoItem)
+            new PagamentoVisao(false, new PagamentoModelo());
+        else if(event.getSource() == listagemPagamentoItem)
+            PagamentoFile.listarPagamentos();
+        else if(event.getSource() == pesquisarPagamentoItem)
+            new PesquisarPagamento();
+        else if(event.getSource() == editarPagamentoItem)
+            new EditarPagamento();
+        else if(event.getSource() == eliminarPagamentoItem)
+            new EliminarPagamento();
+        else if(event.getSource() == novoAgendamentoItem)
+            new AgendamentoVisao(false, new AgendamentoModelo());
+        else if(event.getSource() == listagemAgendamentoItem)
+            AgendamentoFile.listarAgendamentos();
+        else if(event.getSource() == pesquisarAgendamentoItem)
+            new PesquisarAgendamento();
+        else if(event.getSource() == editarAgendamentoItem)
+            new EditarAgendamento();
+        else if(event.getSource() == eliminarAgendamentoItem)
+            new EliminarAgendamento();
         else if(event.getSource() == nacionalidadeItem)
             Tabela2.editarNovosItems("Nacionalidades.tab", "Nova Nacionalidade");
         else if(event.getSource() == metodoPagamentoItem)

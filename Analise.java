@@ -68,6 +68,7 @@ e serviços oferecidos.
 	String dataPagamento
 	double valorPago
 	String metodoPagamento // Dinheiro, Cartão, Transferência
+	boolean status
 
 4. Ficheiros
 - ClienteFile.dat
@@ -87,7 +88,10 @@ e serviços oferecidos.
 
 6. Listagens e Pesquisas
 - Listagem geral de Clientes
+- Listagem geral dos Funcionarios
 - Listagem geral de Agendamentos
+- Listagem geral dos Servicos
+- Listagem geral do Pagamento
 - Pesquisa de Cliente por Nome
 - Pesquisa de Cliente por Id
 - Pesquisa de Agendamentos por Data
