@@ -1,304 +1,141 @@
 /*------------------------------------
-Tema: Gestão de uma Barbearia
-Nome: Enio Manuel
-Numero: 2817
-Ficheiro: ClienteVisao.java
-Data: 11.07.2025
+Tema: Gestão de um Restaurante
+Nome: Fernando Afonso Sebastiao
+Numero: 34422
+Ficheiro: ClienteFile.java
+Data: 26.06.2025
 --------------------------------------*/
 import javax.swing.*;
-import java.awt.event.*;
-import java.awt.*;
 import SwingComponents.*;
 import Calendario.*;
-import javax.swing.UIManager.*;
 import java.io.*;
 
-class ClienteFile extends ObjectsFile
-{
-    public ClienteFile()
-    {
-        super("ClienteFile.dat", new ClienteModelo());
-    }
+public class ClienteFile extends ObjectsFile {
 
-    public void salvarDados(ClienteModelo modelo)
-    {
-        try
-        {
-            // colocar o file pointer no final do ficheiro
-            stream.seek(stream.length());
+	public ClienteFile() {
+		super("ClienteFile.dat", new ClienteModelo());
+	}
 
-            // escrever no modelo
-            modelo.write(stream);
-
-            incrementarProximoCodigo();
-            JOptionPane.showMessageDialog(null,  "Dados Salvos com Sucessso");
-        }
-        catch(IOException ex)
-        {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Falha ao Salvar os Dados");
-        }
-    }
-
-    public void alterarDados(ClienteModelo modelo_novo)
-	{
-		ClienteModelo modelo_antigo = new ClienteModelo();
-		
-		try
-		{
-			stream.seek(4);
-			
-			for(int i = 0; i < getNregistos(); ++i)
-			{
-				modelo_antigo.read( stream );
-				
-				if (i == 0 && modelo_antigo.getId() == modelo_novo.getId())
-				{
-					stream.seek(4); 
-					modelo_novo.write( stream );
-					JOptionPane.showMessageDialog(null, "Dados alterados com sucesso!");
-					return;
-				}	
-				else
-				{
-					if (modelo_antigo.getId() + 1 == modelo_novo.getId())
-					{
-						modelo_novo.write( stream);
-						return;
-					}
-							
-				}			
-			}			
-		}
-		catch(Exception ex)
-		{
+	// SALVAR NOVO CLIENTE
+	public void salvarDados(ClienteModelo modelo) {
+		try {
+			stream.seek(stream.length());
+			modelo.write(stream);
+			incrementarProximoCodigo();
+			JOptionPane.showMessageDialog(null, "Cliente salvo com sucesso!");
+		} catch (IOException ex) {
 			ex.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Erro ao salvar cliente.");
 		}
 	}
 
-    public void eliminarDados(ClienteModelo modelo_novo)
-	{
-		ClienteModelo modelo_antigo = new ClienteModelo();
-		
-		try
-		{
+	// ALTERAR CLIENTE EXISTENTE
+	public void alterarDados(ClienteModelo modeloNovo) {
+		ClienteModelo modeloAtual = new ClienteModelo();
+		try {
 			stream.seek(4);
-			
-			for(int i = 0; i < getNregistos(); ++i)
-			{
-				modelo_antigo.read( stream );
-				
-				if (i == 0 && modelo_antigo.getId() == (modelo_novo.getId()))
-				{
-					stream.seek(4); 
-					modelo_novo.write( stream );
-					JOptionPane.showMessageDialog(null, "Dados eliminados com sucesso!");
+			for (int i = 0; i < getNregistos(); ++i) {
+				modeloAtual.read(stream);
+				if (modeloAtual.getId() == modeloNovo.getId()) {
+					stream.seek(4 + i * modeloNovo.sizeof());
+					modeloNovo.write(stream);
+					JOptionPane.showMessageDialog(null, "Dados do cliente alterados com sucesso!");
 					return;
-				}	
-				else
-				{
-					if ((modelo_antigo.getId() + 1) == (modelo_novo.getId()))
-					{
-						modelo_novo.write(stream);
-						return;
-					}							
-				}			
-			}			
-		}
-		catch(Exception ex)
-		{
+				}
+			}
+		} catch (Exception ex) {
 			ex.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Erro ao alterar dados do cliente.");
 		}
 	}
 
-    public static void listarClientes()
-    {
-        ClienteFile file = new ClienteFile();
-        ClienteModelo modelo = new ClienteModelo();
-        String dados = "Listagem dos Dados do Cliente:\n\n";
+	// ELIMINAR CLIENTE (LÓGICO)
+	public void eliminarDados(ClienteModelo modelo) {
+		modelo.setStatus(false);
+		alterarDados(modelo);
+		JOptionPane.showMessageDialog(null, "Cliente eliminado com sucesso!");
+	}
 
-        try
-        {
-            file.stream.seek(4);
+	// LISTAR TODOS OS CLIENTES
+	public static void listarClientes() {
+		ClienteFile ficheiro = new ClienteFile();
+		ClienteModelo modelo = new ClienteModelo();
+		String output = "Listagem de Clientes:\n\n";
 
-            for(int i = 0; i < file.getNregistos(); i++)
-            {
-                modelo.read(file.stream);
-                if(modelo.getStatus() == true)
-                {    
-                    dados += "==============================\n";
-                    dados += modelo.toString() + "\n\n";
-                }
-            }
+		try {
+			ficheiro.stream.seek(4);
+			for (int i = 0; i < ficheiro.getNregistos(); ++i) {
+				modelo.read(ficheiro.stream);
+				if (modelo.getStatus()) {
+					output += "-----------------------------\n";
+					output += modelo.toString() + "\n";
+				}
+			}
+			JTextArea area = new JTextArea(40, 60);
+			area.setText(output);
+			area.setEditable(false);
+			JOptionPane.showMessageDialog(null, new JScrollPane(area),
+				"Clientes", JOptionPane.INFORMATION_MESSAGE);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Erro ao listar clientes.");
+		}
+	}
 
-            JTextArea area = new JTextArea(40 , 60);
-            area.setText(dados);
-            area.setFocusable(false);
-            JOptionPane.showMessageDialog(null, new JScrollPane(area),
-            "Gestao de Barbearia", JOptionPane.INFORMATION_MESSAGE);
-        }
-        catch(IOException ex)
-        {
-            ex.printStackTrace();
-        }
-    }
+	// BUSCAR CLIENTE PELO ID
+	public static ClienteModelo getClientePorId(int idProcurado) {
+		ClienteFile ficheiro = new ClienteFile();
+		ClienteModelo modelo = new ClienteModelo();
+		try {
+			ficheiro.stream.seek(4);
+			for (int i = 0; i < ficheiro.getNregistos(); ++i) {
+				modelo.read(ficheiro.stream);
+				if (modelo.getId() == idProcurado && modelo.getStatus()) {
+					return modelo;
+				}
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return null;
+	}
 
-	public static StringVector getAllNames()
-    {
-        ClienteFile file = new ClienteFile();
-        ClienteModelo modelo = new ClienteModelo();
-        StringVector vetor = new StringVector();
+	// BUSCAR CLIENTE PELO NOME
+	public static ClienteModelo getClientePorNome(String nomeProcurado) {
+		ClienteFile ficheiro = new ClienteFile();
+		ClienteModelo modelo = new ClienteModelo();
+		try {
+			ficheiro.stream.seek(4);
+			for (int i = 0; i < ficheiro.getNregistos(); ++i) {
+				modelo.read(ficheiro.stream);
+				if (modelo.getNome().equalsIgnoreCase(nomeProcurado) && modelo.getStatus()) {
+					return modelo;
+				}
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return null;
+	}
 
-        try
-        {
-            file.stream.seek(4);
+	// OBTER TODOS OS NOMES DE CLIENTES
+	public static StringVector getAllNomesClientes() {
+		StringVector vector = new StringVector();
+		ClienteFile ficheiro = new ClienteFile();
+		ClienteModelo modelo = new ClienteModelo();
 
-            for(int i = 0; i < file.getNregistos(); i++)
-            {
-                modelo.read(file.stream);
-
-                if(modelo.getStatus() == true)
-                    vetor.add(modelo.getNome());
-            }
-            
-            vetor.sort();    
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        return vetor;
-    }
-
-	public static int pesquisarPorId(int idProcurado)
-    {
-        ClienteFile file = new ClienteFile();
-        ClienteModelo modelo = new ClienteModelo();
-
-        String dados = "Listagem de Dados do Ficheiro \n\n";
-
-        try
-        {
-            file.stream.seek(4);
-
-            for(int i = 0; i < file.getNregistos(); i++)
-            {
-                modelo.read(file.stream);
-
-                if(modelo.getId() == idProcurado && modelo.getStatus() == true)
-                {
-                    JOptionPane.showMessageDialog(null, modelo.toString());
-                    return 0;
-                }
-            }
-               JOptionPane.showMessageDialog(null, "Erro, id nao encontrado", 
-                    "File Not Found", JOptionPane.ERROR_MESSAGE);
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        return idProcurado;
-    }
-
-    public static void pesquisarPorNome(String nomeProcurado)
-    {
-        ClienteFile file = new ClienteFile();
-        ClienteModelo modelo = new ClienteModelo();
-
-        String dados = "Listagem de Dados do Ficheiro \n\n";
-
-        try
-        {
-            file.stream.seek(4);
-
-            for(int i = 0; i < file.getNregistos(); i++)
-            {
-                modelo.read(file.stream);
-
-                if((modelo.getNome().equalsIgnoreCase(nomeProcurado)) && (modelo.getStatus() == true))
-                {
-                    JOptionPane.showMessageDialog(null, modelo.toString());
-                    return;
-                }
-                else
-                {
-                    JOptionPane.showMessageDialog(null, "Erro, nome nao encontrado", 
-                    "File Not Found", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-    }
-
-    // metodo de pesquisa para edicao
-    public static ClienteModelo getPesquisaPorId(int idProcurado)
-    {
-        ClienteFile file = new ClienteFile();
-        ClienteModelo modelo = new ClienteModelo();
-
-        String dados = "Listagem de Dados do Ficheiro \n\n";
-
-        try
-        {
-            file.stream.seek(4);
-
-            for(int i = 0; i < file.getNregistos(); i++)
-            {
-                modelo.read(file.stream);
-
-                if((modelo.getId() == idProcurado) && (modelo.getStatus() == true))
-                {
-                    JOptionPane.showMessageDialog(null, modelo.toString());
-                    return modelo;
-                }
-            }
-               JOptionPane.showMessageDialog(null, "Erro, id nao encontrado", 
-                    "File Not Found", JOptionPane.ERROR_MESSAGE);
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        return modelo;
-    }
-
-    // getPesquisarPorNome
-    public static ClienteModelo getNomeProcurado(String nomeProcurado)
-    {
-        ClienteFile file = new ClienteFile();
-        ClienteModelo modelo = new ClienteModelo();
-
-        String dados = "Listagem de Dados do Ficheiro \n\n";
-
-        try
-        {
-            file.stream.seek(4);
-
-            for(int i = 0; i < file.getNregistos(); i++)
-            {
-                modelo.read(file.stream);
-
-                if((modelo.getNome().equalsIgnoreCase(nomeProcurado)) && (modelo.getStatus() == true))
-                {
-                    JOptionPane.showMessageDialog(null, modelo.toString());
-                    return modelo;
-                }
-                else
-                {
-                    JOptionPane.showMessageDialog(null, "Erro, nome nao encontrado", 
-                    "File Not Found", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        return modelo;
-    }
-
+		try {
+			ficheiro.stream.seek(4);
+			for (int i = 0; i < ficheiro.getNregistos(); ++i) {
+				modelo.read(ficheiro.stream);
+				if (modelo.getStatus()) {
+					vector.add(modelo.getNome());
+				}
+			}
+			vector.sort();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return vector;
+	}
 }

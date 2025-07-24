@@ -1,102 +1,81 @@
 /*------------------------------------
-Tema: Gestão de uma Barbearia
-Nome: Enio Manuel
-Numero: 2817
+Tema: Gestão de um Restaurante
+Nome: Fernando Afonso Sebastião
+Número: 34422
 Ficheiro: Analise.java
-Data: 21.06.2025
+Data: 18.01.2025
 --------------------------------------*/
+
 /*
 1. Objectivo
-Este projecto tem o objectivo de gerir os serviços prestados numa barbearia, 
-incluindo o registo de clientes, agendamento de atendimentos, gestão de funcionários 
-e serviços oferecidos.
+Este projeto tem como objetivo gerir as operações de um restaurante,
+incluindo o cadastro e pesquisa de clientes, controle de produtos,
+processamento de vendas e reservas de mesas.
 
-2. Visao [Interfaces Gráficas]
-- ApresentacaoVisao
-- LoginVisao
+2. Visão [Menus do Sistema / Interfaces]
 - MenuPrincipal
 - ClienteVisao
-- FuncionarioVisao
-- ServicoVisao
-- AgendamentoVisao
-- PagamentoVisao
+- ReservaVisao
+- ProdutoVisao
+- VendaVisao
 
 3. Entidades Fortes e Seus Atributos (Modelo)
 - ClienteModelo
 	int id
 	String nome
-	String contacto
+	String bi
 	String genero
-	String nacionalidade
-	String provincia
-	String municipio
-	String comuna
-	boolean status
-	
-- FuncionarioModelo
+	int telefone
+
+- ReservaModelo
 	int id
-	String nome
-	String especialidade
-	String contacto
-	String genero
-	String provincia
-	String municipio
-	String comuna
-	boolean status
+	int numPessoas
+	String nomeCliente
+	String mesa
+	String horario
+	String funcionario
+	DATE dataReserva
 
-- ServicoModelo
+- ProdutoModelo
 	int id
-	String nomeServico
-	double preco
-	int duracaoMinutos
-	String descricao
-	boolean status
+	String nomeProduto
+	float preco
 
-- AgendamentoModelo
+- VendaModelo
 	int id
-	ClienteModelo cliente
-	FuncionarioModelo funcionario
-	ServicoModelo servico
-	String dataAgendamento
-	String horaAgendamento
-	String estado // Agendado, Concluído, Cancelado
-	boolean status
+	String nomecliente
+	String nomeProduto
+	int quantidade
+	String formaPagamento
+	String funcionario
+	DATE dataVenda
+	float valorTotal
 
-- PagamentoModelo
-	int id
-	AgendamentoModelo agendamento
-	String dataPagamento
-	double valorPago
-	String metodoPagamento // Dinheiro, Cartão, Transferência
-	boolean status
+4. Ficheiros de Dados
+- CLIENTES.DAT
+- RESERVAS.DAT
+- PRODUTOS.DAT
+- VENDAS.DAT
 
-4. Ficheiros
-- ClienteFile.dat
-- FuncionarioFile.dat
-- ServicoFile.dat
-- AgendamentoFile.dat
-- PagamentoFile.dat
-
-5. Tabelas de Apoio (Auxiliares) = Entidades Fracas
-- Nacionalidades.tab
-- Provincias.tab
-- Municipios.tab
-- Comunas.tab
-- MetodoPagamento.tab
-- Especialidades.tab
-- TiposServico.tab
+5. Tabelas de Apoio (Auxiliares) - Entidades Fracas
+- Métodos de Pagamento
+- Cliente
+- Categorias de Produto 
+- Estados do Pedido 
 
 6. Listagens e Pesquisas
 - Listagem geral de Clientes
-- Listagem geral dos Funcionarios
-- Listagem geral de Agendamentos
-- Listagem geral dos Servicos
-- Listagem geral do Pagamento
 - Pesquisa de Cliente por Nome
-- Pesquisa de Cliente por Id
-- Pesquisa de Agendamentos por Data
+- Pesquisa de Cliente por Nacionalidade (se for implementado)
+- Listagem geral de Produtos
+- Pesquisa de Produto por Nome
+- Listagem geral de Vendas
+- Pesquisa de Venda por Data
+- Listagem geral de Reservas
+- Pesquisa de Reserva por Data
 
 7. Diversos
-7.1 - Implementação: Java Swing
-7.2 - IDE: Notepad++
+7.1 - Implementação: Linguagem C (ou Java, conforme usado)
+7.2 - IDE/Editor: NotePad++
+7.3 - Compilação: GCC (ou javac se for Java)
 */

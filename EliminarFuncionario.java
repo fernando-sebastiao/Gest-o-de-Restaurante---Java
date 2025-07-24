@@ -1,7 +1,7 @@
 /*------------------------------------
-Tema: Gestão de uma Barbearia
-Nome: Enio Manuel
-Numero: 2817
+Tema: Gestão de um Restaurante
+Nome: Fernando Afonso Sebastiao
+Numero: 34422
 Ficheiro: EliminarFuncionario.java
 Data: 11.07.2025
 --------------------------------------*/
