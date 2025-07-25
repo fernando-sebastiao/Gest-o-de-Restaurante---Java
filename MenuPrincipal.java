@@ -21,7 +21,7 @@ public class MenuPrincipal extends JFrame implements ActionListener
     private JMenuItem novaReservaItem, editarReservaItem, eliminarReservaItem, listarReservasItem, pesquisarReservaItem;
     private JMenuItem novoProdutoItem, editarProdutoItem, eliminarProdutoItem, listarProdutosItem, pesquisarProdutoItem;
     private JMenuItem novaVendaItem, editarVendaItem, eliminarVendaItem, listarVendasItem, pesquisarVendaItem;
-    private JMenuItem nacionalidadeItem, provinciaItem, municipioItem, comunaItem, metodoPagamentoItem, nomeClienteItem, nomeProdutoItem, tipoDeServicoItem, nomeFuncionarioItem, nomeMesaItem;
+    private JMenuItem nacionalidadeItem, provinciaItem, municipioItem, comunaItem, metodoPagamentoItem, nomeClienteItem, nomeProdutoItem, nomeFuncionarioItem, nomeMesaItem;
 
     public MenuPrincipal(String user)
     {
@@ -107,7 +107,6 @@ public class MenuPrincipal extends JFrame implements ActionListener
         tabelaMenu.add(provinciaItem = new JMenuItem("Provincias"));
         tabelaMenu.add(municipioItem = new JMenuItem("Municipios"));
         tabelaMenu.add(comunaItem = new JMenuItem("Comunas"));
-        tabelaMenu.add(tipoDeServicoItem = new JMenuItem("Tipo de Servico"));
         tabelaMenu.add(metodoPagamentoItem = new JMenuItem("Metodos de Pagamento"));
         tabelaMenu.add(nomeMesaItem = new JMenuItem("Nome Da Mesa"));
         tabelaMenu.add(nomeFuncionarioItem = new JMenuItem("Nome Do Funcionário"));
@@ -148,7 +147,6 @@ public class MenuPrincipal extends JFrame implements ActionListener
         provinciaItem.addActionListener(this);
         municipioItem.addActionListener(this);
         comunaItem.addActionListener(this);
-        tipoDeServicoItem.addActionListener(this);
         metodoPagamentoItem.addActionListener(this);
         nomeFuncionarioItem.addActionListener(this);
         nomeMesaItem.addActionListener(this);
@@ -216,8 +214,6 @@ public class MenuPrincipal extends JFrame implements ActionListener
             Tabela2.editarNovosItems("Nacionalidades.tab", "Nova Nacionalidade");
         else if(event.getSource() == metodoPagamentoItem)
             Tabela2.editarNovosItems("MetodoPagamento.tab", "Novo Metodo de Pagamento");
-        else if(event.getSource() == tipoDeServicoItem)
-            Tabela2.editarNovosItems("TiposServico.tab", "Novo Tipo de Servico");
         else if(event.getSource() == provinciaItem)
             Tabela2.editarNovosItems("Provincias.tab", "Nova Provincia");
         else if(event.getSource() == municipioItem)
