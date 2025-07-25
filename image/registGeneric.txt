@@ -1,0 +1,20 @@
+RegistGeneric
+
+/*------------------------------------
+Tema: Gestão de uma Livraria
+Nome: Firmino Sambambi
+Numero: 35662
+Ficheiro: RegistGeneric.java
+Data: 13.07.2025
+--------------------------------------*/
+
+package Utilitarios;
+
+import java.io.IOException;
+import java.io.RandomAccessFile;
+
+public interface RegistGeneric {
+    public void write(RandomAccessFile raf) throws IOException;
+    public void read(RandomAccessFile raf) throws IOException;
+    public int getId();
+}

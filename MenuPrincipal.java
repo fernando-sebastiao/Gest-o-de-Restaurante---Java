@@ -44,20 +44,20 @@ public class MenuPrincipal extends JFrame implements ActionListener
 
         // instanciando os Menus
         menuBar.add(clienteMenu = new JMenu("Clientes"));
-        clienteMenu.setIcon(new ImageIcon("image/funcionario32.png"));
+        clienteMenu.setIcon(new ImageIcon("image/cliente.png"));
         clienteMenu.setMnemonic('C');
 
         menuBar.add(reservaMenu = new JMenu("Reservas"));
-        reservaMenu.setIcon(new ImageIcon("image/funcionario32.png"));
+        reservaMenu.setIcon(new ImageIcon("image/reserva.png"));
         reservaMenu.setMnemonic('R');
 
         menuBar.add(produtoMenu = new JMenu("Produtos"));
-        produtoMenu.setIcon(new ImageIcon("image/funcionario32.png"));
+        produtoMenu.setIcon(new ImageIcon("image/adicionar-produto.png"));
         produtoMenu.setMnemonic('P');
 
         menuBar.add(vendaMenu = new JMenu("Vendas"));
-        vendaMenu.setIcon(new ImageIcon("image/funcionario32.png"));
-        vendaMenu.setMnemonic('R');
+        vendaMenu.setIcon(new ImageIcon("image/mao.png"));
+        vendaMenu.setMnemonic('V');
         
         menuBar.add(tabelaMenu = new JMenu("Tabelas"));
         tabelaMenu.setIcon(new ImageIcon("image/tabela.png"));
@@ -80,7 +80,7 @@ public class MenuPrincipal extends JFrame implements ActionListener
         clienteMenu.add(sairItem = new JMenuItem("Sair"));
 
         //Reserva
-        reservaMenu.add(novaReservaItem = new JMenuItem("Nova Reserva"));
+        reservaMenu.add(novaReservaItem = new JMenuItem("Nova Reserva"));novaReservaItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_MASK));
         reservaMenu.add(listarReservasItem = new JMenuItem("Listar Reservas"));
         reservaMenu.add(eliminarReservaItem = new JMenuItem("Eliminar Reserva"));
         reservaMenu.add(pesquisarReservaItem = new JMenuItem("Pesquisar Reserva"));
@@ -88,6 +88,7 @@ public class MenuPrincipal extends JFrame implements ActionListener
 
         //ProdutoMenu
         produtoMenu.add(novoProdutoItem = new JMenuItem("Nova Produto"));
+        novoProdutoItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.CTRL_MASK));
         produtoMenu.add(listarProdutosItem = new JMenuItem("Listar Produto"));
         produtoMenu.add(eliminarProdutoItem = new JMenuItem("Eliminar Produto"));
         produtoMenu.add(pesquisarProdutoItem = new JMenuItem("Pesquisar Produto"));
@@ -95,6 +96,7 @@ public class MenuPrincipal extends JFrame implements ActionListener
 
         //VendaMenu
         vendaMenu.add(novaVendaItem = new JMenuItem("Nova Venda"));
+        novaVendaItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_MASK));
         vendaMenu.add(listarVendasItem = new JMenuItem("Listar Vendas"));
         vendaMenu.add(eliminarVendaItem = new JMenuItem("Eliminar Venda"));
         vendaMenu.add(pesquisarVendaItem = new JMenuItem("Pesquisar Venda"));
