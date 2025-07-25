@@ -73,34 +73,35 @@ public class MenuPrincipal extends JFrame implements ActionListener
         clienteMenu.add(editarClienteItem = new JMenuItem("Editar Cliente", new ImageIcon("image/edit24.png")));
         clienteMenu.add(eliminarClienteItem = new JMenuItem("Eliminar CLiente", new ImageIcon("image/delete24.png")));
         clienteMenu.addSeparator();
-        clienteMenu.add(listagemClienteItem = new JMenuItem("Listar Cliente"));
+        clienteMenu.add(listagemClienteItem = new JMenuItem("Listar Cliente", new ImageIcon("image/listagens-all.png")));
         clienteMenu.addSeparator();
-        clienteMenu.add(pesquisarClienteItem = new JMenuItem("Pesquisar Cliente"));
+        clienteMenu.add(pesquisarClienteItem = new JMenuItem("Pesquisar Cliente", new ImageIcon("image/all/search24.png")));
         clienteMenu.addSeparator();
-        clienteMenu.add(sairItem = new JMenuItem("Sair"));
+        clienteMenu.add(sairItem = new JMenuItem("Sair", new ImageIcon("image/poder.png")));
 
         //Reserva
-        reservaMenu.add(novaReservaItem = new JMenuItem("Nova Reserva"));novaReservaItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_MASK));
-        reservaMenu.add(listarReservasItem = new JMenuItem("Listar Reservas"));
-        reservaMenu.add(eliminarReservaItem = new JMenuItem("Eliminar Reserva"));
-        reservaMenu.add(pesquisarReservaItem = new JMenuItem("Pesquisar Reserva"));
-        reservaMenu.add(editarReservaItem = new JMenuItem("Editar Reservas"));
+        reservaMenu.add(novaReservaItem = new JMenuItem("Nova Reserva", new ImageIcon("image/novo24.png")));
+        novaReservaItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_MASK));
+        reservaMenu.add(editarReservaItem = new JMenuItem("Editar Reservas", new ImageIcon("image/edit24.png")));
+        reservaMenu.add(eliminarReservaItem = new JMenuItem("Eliminar Reserva", new ImageIcon("image/delete24.png")));
+        reservaMenu.add(listarReservasItem = new JMenuItem("Listar Reservas", new ImageIcon("image/listagens-all.png")));
+        reservaMenu.add(pesquisarReservaItem = new JMenuItem("Pesquisar Reserva", new ImageIcon("image/all/search24.png")));
 
         //ProdutoMenu
-        produtoMenu.add(novoProdutoItem = new JMenuItem("Nova Produto"));
+        produtoMenu.add(novoProdutoItem = new JMenuItem("Nova Produto", new ImageIcon("image/novo24.png")));
         novoProdutoItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.CTRL_MASK));
-        produtoMenu.add(listarProdutosItem = new JMenuItem("Listar Produto"));
-        produtoMenu.add(eliminarProdutoItem = new JMenuItem("Eliminar Produto"));
-        produtoMenu.add(pesquisarProdutoItem = new JMenuItem("Pesquisar Produto"));
-        produtoMenu.add(editarProdutoItem = new JMenuItem("Editar Produto"));
+        produtoMenu.add(editarProdutoItem = new JMenuItem("Editar Produto", new ImageIcon("image/edit24.png")));
+        produtoMenu.add(eliminarProdutoItem = new JMenuItem("Eliminar Produto", new ImageIcon("image/delete24.png")));
+        produtoMenu.add(listarProdutosItem = new JMenuItem("Listar Produto", new ImageIcon("image/listagens-all.png")));
+        produtoMenu.add(pesquisarProdutoItem = new JMenuItem("Pesquisar Produto", new ImageIcon("image/all/search24.png")));
 
         //VendaMenu
-        vendaMenu.add(novaVendaItem = new JMenuItem("Nova Venda"));
+        vendaMenu.add(novaVendaItem = new JMenuItem("Nova Venda", new ImageIcon("image/novo24.png")));
         novaVendaItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_MASK));
-        vendaMenu.add(listarVendasItem = new JMenuItem("Listar Vendas"));
-        vendaMenu.add(eliminarVendaItem = new JMenuItem("Eliminar Venda"));
-        vendaMenu.add(pesquisarVendaItem = new JMenuItem("Pesquisar Venda"));
-        vendaMenu.add(editarVendaItem = new JMenuItem("Editar Venda"));
+        vendaMenu.add(editarVendaItem = new JMenuItem("Editar Venda", new ImageIcon("image/edit24.png")));
+        vendaMenu.add(eliminarVendaItem = new JMenuItem("Eliminar Venda", new ImageIcon("image/delete24.png")));
+        vendaMenu.add(listarVendasItem = new JMenuItem("Listar Vendas", new ImageIcon("image/listagens-all.png"))); 
+        vendaMenu.add(pesquisarVendaItem = new JMenuItem("Pesquisar Venda", new ImageIcon("image/all/search24.png")));
 
         // instanciando os elementos do tabelaMenu
         tabelaMenu.add(nomeClienteItem = new JMenuItem("Nome do Cliente"));
