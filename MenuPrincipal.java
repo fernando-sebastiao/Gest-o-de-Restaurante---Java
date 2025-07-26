@@ -230,6 +230,8 @@ public class MenuPrincipal extends JFrame implements ActionListener
         else if(event.getSource() == comunaItem)
             Tabela3_3.editarNovosItems("Provincias.tab", "Municipios.tab", "Comunas.tab", 
             "Provincia", "Municipio", "Comuna", "Nova Comuna");
+        else if(event.getSource() == sairItem)
+            dispose();
     }
 
     public static void main(String[] args)
