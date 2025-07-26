@@ -16,7 +16,7 @@ import Calendario.*;
 public class MenuPrincipal extends JFrame implements ActionListener
 {
     private JMenuBar menuBar;
-    private JMenu clienteMenu, reservaMenu,produtoMenu,vendaMenu,tabelaMenu, ajudaMenu;
+    private JMenu clienteMenu, reservaMenu,produtoMenu,vendaMenu,tabelaMenu, listagemMenu,ajudaMenu;
     private JMenuItem novoClienteItem, editarClienteItem, eliminarClienteItem, sairItem, listagemClienteItem, pesquisarClienteItem;
     private JMenuItem novaReservaItem, editarReservaItem, eliminarReservaItem, listarReservasItem, pesquisarReservaItem;
     private JMenuItem novoProdutoItem, editarProdutoItem, eliminarProdutoItem, listarProdutosItem, pesquisarProdutoItem;
@@ -58,6 +58,10 @@ public class MenuPrincipal extends JFrame implements ActionListener
         menuBar.add(vendaMenu = new JMenu("Vendas"));
         vendaMenu.setIcon(new ImageIcon("image/mao.png"));
         vendaMenu.setMnemonic('V');
+
+        menuBar.add(listagemMenu= new JMenu("Listagens"));
+        listagemMenu.setIcon(new ImageIcon("image/listagens.png"));
+        listagemMenu.setMnemonic('L');
         
         menuBar.add(tabelaMenu = new JMenu("Tabelas"));
         tabelaMenu.setIcon(new ImageIcon("image/tabela.png"));
@@ -73,8 +77,6 @@ public class MenuPrincipal extends JFrame implements ActionListener
         clienteMenu.add(editarClienteItem = new JMenuItem("Editar Cliente", new ImageIcon("image/edit24.png")));
         clienteMenu.add(eliminarClienteItem = new JMenuItem("Eliminar CLiente", new ImageIcon("image/delete24.png")));
         clienteMenu.addSeparator();
-        clienteMenu.add(listagemClienteItem = new JMenuItem("Listar Cliente", new ImageIcon("image/listagens-all.png")));
-        clienteMenu.addSeparator();
         clienteMenu.add(pesquisarClienteItem = new JMenuItem("Pesquisar Cliente", new ImageIcon("image/all/search24.png")));
         clienteMenu.addSeparator();
         clienteMenu.add(sairItem = new JMenuItem("Sair", new ImageIcon("image/poder.png")));
@@ -84,7 +86,6 @@ public class MenuPrincipal extends JFrame implements ActionListener
         novaReservaItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_MASK));
         reservaMenu.add(editarReservaItem = new JMenuItem("Editar Reservas", new ImageIcon("image/edit24.png")));
         reservaMenu.add(eliminarReservaItem = new JMenuItem("Eliminar Reserva", new ImageIcon("image/delete24.png")));
-        reservaMenu.add(listarReservasItem = new JMenuItem("Listar Reservas", new ImageIcon("image/listagens-all.png")));
         reservaMenu.add(pesquisarReservaItem = new JMenuItem("Pesquisar Reserva", new ImageIcon("image/all/search24.png")));
 
         //ProdutoMenu
@@ -92,7 +93,6 @@ public class MenuPrincipal extends JFrame implements ActionListener
         novoProdutoItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.CTRL_MASK));
         produtoMenu.add(editarProdutoItem = new JMenuItem("Editar Produto", new ImageIcon("image/edit24.png")));
         produtoMenu.add(eliminarProdutoItem = new JMenuItem("Eliminar Produto", new ImageIcon("image/delete24.png")));
-        produtoMenu.add(listarProdutosItem = new JMenuItem("Listar Produto", new ImageIcon("image/listagens-all.png")));
         produtoMenu.add(pesquisarProdutoItem = new JMenuItem("Pesquisar Produto", new ImageIcon("image/all/search24.png")));
 
         //VendaMenu
@@ -100,8 +100,13 @@ public class MenuPrincipal extends JFrame implements ActionListener
         novaVendaItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_MASK));
         vendaMenu.add(editarVendaItem = new JMenuItem("Editar Venda", new ImageIcon("image/edit24.png")));
         vendaMenu.add(eliminarVendaItem = new JMenuItem("Eliminar Venda", new ImageIcon("image/delete24.png")));
-        vendaMenu.add(listarVendasItem = new JMenuItem("Listar Vendas", new ImageIcon("image/listagens-all.png"))); 
         vendaMenu.add(pesquisarVendaItem = new JMenuItem("Pesquisar Venda", new ImageIcon("image/all/search24.png")));
+
+        //ListagensMenu
+        listagemMenu.add(listagemClienteItem = new JMenuItem("Listar Cliente", new ImageIcon("image/listagens-all.png")));
+        listagemMenu.add(listarReservasItem = new JMenuItem("Listar Reservas", new ImageIcon("image/listagens-all.png")));
+        listagemMenu.add(listarProdutosItem = new JMenuItem("Listar Produto", new ImageIcon("image/listagens-all.png")));
+        listagemMenu.add(listarVendasItem = new JMenuItem("Listar Vendas", new ImageIcon("image/listagens-all.png")));
 
         // instanciando os elementos do tabelaMenu
         tabelaMenu.add(nomeClienteItem = new JMenuItem("Nome do Cliente"));
