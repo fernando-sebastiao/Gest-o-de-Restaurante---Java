@@ -24,7 +24,7 @@ public class LoginVisao extends JFrame
 
         JPanel painelNorte = new JPanel();
 
-        ImageIcon iconOriginal = new ImageIcon("image/logoBarbearia.png");
+        ImageIcon iconOriginal = new ImageIcon("image/restaurante.png");
         Image imagemRedimensionada = iconOriginal.getImage().getScaledInstance(250, 250, Image.SCALE_SMOOTH);
         ImageIcon iconRedimensionado = new ImageIcon(imagemRedimensionada);
 
@@ -46,7 +46,7 @@ public class LoginVisao extends JFrame
     {
         private JTextField userJTF;
         private JPasswordField passwordJTF;
-        private String correctUser = "2817", correctPassword = "ucan";
+        private String correctUser = "34422", correctPassword = "ucan";
 
         public PainelCentro()
         {
