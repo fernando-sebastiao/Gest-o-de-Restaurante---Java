@@ -217,7 +217,7 @@ public class MenuPrincipal extends JFrame implements ActionListener
         else if(event.getSource() == nomeClienteItem)
             Tabela2.editarNovosItems("NomeCLiente.tab", "Novo Cliente");
         else if(event.getSource() == nomeProdutoItem)
-            Tabela2.editarNovosItems("NomeProduto.tab", "Novo Cliente"); 
+            Tabela2.editarNovosItems("NomeProduto.tab", "Novo Produto"); 
         else if(event.getSource() == nacionalidadeItem)
             Tabela2.editarNovosItems("Nacionalidades.tab", "Nova Nacionalidade");
         else if(event.getSource() == metodoPagamentoItem)
