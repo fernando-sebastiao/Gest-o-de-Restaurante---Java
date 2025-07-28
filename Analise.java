@@ -58,15 +58,18 @@ processamento de vendas e reservas de mesas.
 - VENDAS.DAT
 
 5. Tabelas de Apoio (Auxiliares) - Entidades Fracas
-- Métodos de Pagamento
-- Cliente
-- Categorias de Produto 
-- Estados do Pedido 
+- NomeMesa.tab
+- NomeProduto.tab
+- Nacionalidade.tab
+- Provincia.tab
+- Municipio.tab
+- Comuna.tab
+- MetodoPagamento.tab
+- NomeFuncionário
 
 6. Listagens e Pesquisas
 - Listagem geral de Clientes
 - Pesquisa de Cliente por Nome
-- Pesquisa de Cliente por Nacionalidade (se for implementado)
 - Listagem geral de Produtos
 - Pesquisa de Produto por Nome
 - Listagem geral de Vendas
