@@ -1,17 +1,8 @@
-/*------------------------------------
-Tema: Gestão de uma Barbearia
-Nome: Enio Manuel
-Número: 2817
-Ficheiro: PesquisarReserva.java
-Data: 10.07.2025
---------------------------------------*/
-
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
 import SwingComponents.*;
 import Calendario.*;
-import javax.swing.UIManager.*;
 
 public class PesquisarReserva extends JFrame {
     PainelCentro centro;
@@ -28,18 +19,65 @@ public class PesquisarReserva extends JFrame {
         setVisible(true);
     }
 
-    class PainelCentro extends JPanel {
-        JComboBox clientesJCB;
+    class PainelCentro extends JPanel implements ActionListener {
+        JComboBox<String> clientesJCB;
+        JTextFieldData dataJTF;
+        JRadioButton pesquisarPorNomeJRB, pesquisarPorDataJRB;
+        ButtonGroup group;
 
         public PainelCentro() {
-            setLayout(new GridLayout(1, 2, 10, 10));
+            setLayout(new GridLayout(3, 2, 10, 10));
 
-            add(new JLabel("Escolha o Cliente:"));
-            add(clientesJCB = new JComboBox(ReservaFile.getAllClientesReservas()));
+            group = new ButtonGroup();
+
+            pesquisarPorNomeJRB = new JRadioButton("Pesquisar por Nome do Cliente", true);
+            pesquisarPorDataJRB = new JRadioButton("Pesquisar por Data da Reserva", false);
+
+            group.add(pesquisarPorNomeJRB);
+            group.add(pesquisarPorDataJRB);
+
+            add(pesquisarPorNomeJRB);
+            add(pesquisarPorDataJRB);
+
+            add(new JLabel("Escolha o Nome do Cliente:"));
+            clientesJCB = new JComboBox<>(ReservaFile.getAllClientesReservas());
+            add(clientesJCB);
+
+            add(new JLabel("Escolha a Data da Reserva:"));
+            dataJTF = new JTextFieldData("dd/mm/yyyy");
+            add(dataJTF.getDTestField());
+            add(dataJTF.getDButton());
+
+            // Inicialmente, campo data desabilitado
+            dataJTF.getDTestField().setEnabled(false);
+            dataJTF.getDButton().setEnabled(false);
+
+            pesquisarPorNomeJRB.addActionListener(this);
+            pesquisarPorDataJRB.addActionListener(this);
+        }
+
+        public void actionPerformed(ActionEvent evt) {
+            if (evt.getSource() == pesquisarPorNomeJRB) {
+                clientesJCB.setEnabled(true);
+                dataJTF.getDTestField().setEnabled(false);
+                dataJTF.getDButton().setEnabled(false);
+            } else if (evt.getSource() == pesquisarPorDataJRB) {
+                clientesJCB.setEnabled(false);
+                dataJTF.getDTestField().setEnabled(true);
+                dataJTF.getDButton().setEnabled(true);
+            }
+        }
+
+        public int getTipoPesquisa() {
+            return pesquisarPorNomeJRB.isSelected() ? 1 : 2;
         }
 
         public String getClienteProcurado() {
             return String.valueOf(clientesJCB.getSelectedItem());
+        }
+
+        public String getDataProcurada() {
+            return dataJTF.getDTestField().getText().trim();
         }
     }
 
@@ -47,8 +85,11 @@ public class PesquisarReserva extends JFrame {
         JButton pesquisarJB, cancelarJB;
 
         public PainelSul() {
-            add(pesquisarJB = new JButton("Pesquisar", new ImageIcon("image/search32.png")));
-            add(cancelarJB = new JButton("Cancelar", new ImageIcon("image/cancel24.png")));
+            pesquisarJB = new JButton("Pesquisar", new ImageIcon("image/search32.png"));
+            cancelarJB = new JButton("Cancelar", new ImageIcon("image/cancel24.png"));
+
+            add(pesquisarJB);
+            add(cancelarJB);
 
             pesquisarJB.addActionListener(this);
             cancelarJB.addActionListener(this);
@@ -56,12 +97,28 @@ public class PesquisarReserva extends JFrame {
 
         public void actionPerformed(ActionEvent evt) {
             if (evt.getSource() == pesquisarJB) {
-                ReservaModelo modelo = ReservaFile.getReservaPorCliente(centro.getClienteProcurado());
-
-                if (modelo != null && modelo.getStatus()) {
-                    JOptionPane.showMessageDialog(null, modelo.toString(), "Reserva Encontrada", JOptionPane.INFORMATION_MESSAGE);
+                if (centro.getTipoPesquisa() == 1) {
+                    // Pesquisar por nome do cliente
+                    String cliente = centro.getClienteProcurado();
+                    ReservaModelo modelo = ReservaFile.getReservaPorCliente(cliente);
+                    if (modelo != null && modelo.getStatus()) {
+                        JOptionPane.showMessageDialog(null, modelo.toString(), "Reserva Encontrada", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Reserva não encontrada ou inativa para este cliente.");
+                    }
                 } else {
-                    JOptionPane.showMessageDialog(null, "Reserva não encontrada ou inativa.");
+                    // Pesquisar por data da reserva
+                    String data = centro.getDataProcurada();
+                    if (data.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Por favor, informe uma data válida.");
+                        return;
+                    }
+                    ReservaModelo modelo = ReservaFile.getReservaPorData(data);
+                    if (modelo != null && modelo.getStatus()) {
+                        JOptionPane.showMessageDialog(null, modelo.toString(), "Reserva Encontrada", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Reserva não encontrada ou inativa para esta data.");
+                    }
                 }
             } else {
                 dispose();

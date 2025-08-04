@@ -1,17 +1,8 @@
-/*------------------------------------
-Tema: Gestão de um Restaurante
-Nome: Fernando Afonso Sebastião
-Numero: 34422
-Ficheiro: EliminarCliente.java
-Data: 26.06.2025
---------------------------------------*/
-
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
 import SwingComponents.*;
 import Calendario.*;
-import javax.swing.UIManager.*;
 
 public class EliminarCliente extends JFrame {
 
@@ -29,21 +20,54 @@ public class EliminarCliente extends JFrame {
         setVisible(true);
     }
 
-    class PainelCentro extends JPanel {
-        JComboBox nomesJCB;
+   class PainelCentro extends JPanel {
+    JComboBox nomesJCB;
+    JTextField idField;
 
-        public PainelCentro() {
-            setLayout(new GridLayout(2, 2, 10, 10));
+    public PainelCentro() {
+        setLayout(new GridLayout(3, 2, 10, 10));
 
-            add(new JLabel("Escolha o Nome do Cliente"));
-            nomesJCB = new JComboBox(ClienteFile.getAllNomesClientes());
-            add(nomesJCB);
-        }
+        add(new JLabel("Escolha o Nome do Cliente:"));
+        nomesJCB = new JComboBox(ClienteFile.getAllNomesClientes());
+        add(nomesJCB);
 
-        public String getNomeProcurado() {
-            return String.valueOf(nomesJCB.getSelectedItem());
-        }
+        add(new JLabel("Ou insira o ID do Cliente:"));
+        idField = new JTextField();
+        add(idField);
+
+        // Adiciona escuta para o campo de ID
+        idField.addKeyListener(new KeyAdapter() {
+            public void keyReleased(KeyEvent e) {
+                if (!idField.getText().trim().isEmpty()) {
+                    nomesJCB.setEnabled(false);
+                } else {
+                    nomesJCB.setEnabled(true);
+                }
+            }
+        });
+
+        // Adiciona escuta para o combo de nomes
+        nomesJCB.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (nomesJCB.isEnabled()) {
+                    idField.setText("");
+                    idField.setEnabled(false);
+                } else {
+                    idField.setEnabled(true);
+                }
+            }
+        });
     }
+
+    public String getNomeProcurado() {
+        return String.valueOf(nomesJCB.getSelectedItem());
+    }
+
+    public String getIdDigitado() {
+        return idField.getText().trim();
+    }
+}
+
 
     class PainelSul extends JPanel implements ActionListener {
         JButton eliminarJB, cancelarJB;
@@ -58,7 +82,22 @@ public class EliminarCliente extends JFrame {
 
         public void actionPerformed(ActionEvent evt) {
             if (evt.getSource() == eliminarJB) {
-                ClienteModelo modelo = ClienteFile.getClientePorNome(centro.getNomeProcurado());
+                ClienteModelo modelo = null;
+
+                // Se o ID for informado, buscar por ID
+                String idTexto = centro.getIdDigitado();
+                if (!idTexto.isEmpty()) {
+                    try {
+                        int id = Integer.parseInt(idTexto);
+                        modelo = ClienteFile.getClientePorId(id);
+                    } catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(null, "ID inválido. Insira apenas números.");
+                        return;
+                    }
+                } else {
+                    // Caso contrário, buscar por nome
+                    modelo = ClienteFile.getClientePorNome(centro.getNomeProcurado());
+                }
 
                 if (modelo != null && modelo.getStatus()) {
                     JOptionPane.showMessageDialog(null, modelo.toString());

@@ -109,6 +109,24 @@ public class ReservaFile extends ObjectsFile {
 		}
 	}
 
+	public static ReservaModelo getReservaPorData(String dataProcurada) {
+    ReservaFile ficheiro = new ReservaFile();
+    ReservaModelo modelo = new ReservaModelo();
+    try {
+        ficheiro.stream.seek(4);
+        for (int i = 0; i < ficheiro.getNregistos(); ++i) {
+            modelo.read(ficheiro.stream);
+            if (modelo.getDataReserva().equals(dataProcurada) && modelo.getStatus()) {
+                return modelo;
+            }
+        }
+    } catch (Exception ex) {
+        ex.printStackTrace();
+    }
+    return null;
+}
+
+
 	// Obter todos os nomes de clientes com reserva
 	public static StringVector getAllClientesReservas() {
 		ReservaFile ficheiro = new ReservaFile();
