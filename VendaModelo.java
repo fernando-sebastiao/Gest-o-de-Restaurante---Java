@@ -1,10 +1,3 @@
-/*------------------------------------
-Tema: Gestão de um Restaurante
-Nome: Fernando Afonso Sebastiao
-Numero: 34422
-Ficheiro: ClienteModelo.java
-Data: 10.07.2025
---------------------------------------*/
 
 import javax.swing.*;
 import java.io.*;

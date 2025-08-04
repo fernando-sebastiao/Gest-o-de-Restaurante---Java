@@ -1,9 +1,9 @@
 /*------------------------------------
-Tema: Gestão de um Restaurante
-Nome: Fernando Afonso Sebastiao
-Numero: 34422
+Tema: Gestão de um Video Clube
+Nome: Adolfo Cabeia
+Numero: 31671
 Ficheiro: VendaVisao.java
-Data: 10.07.2025
+Data: 14.07.2025
 --------------------------------------*/
 
 import javax.swing.*;
@@ -40,8 +40,8 @@ public class VendaVisao extends JFrame {
     }
 
     class PainelCentro extends JPanel {
-        private JTextField idJTF, quantidadeJTF, valorTotalJTF, nomeClienteJTF;
-        private JComboBoxPersonal  nomeProdutoJCB, formaPagamentoJCB, funcionarioJCB;
+        private JTextField idJTF, quantidadeJTF, valorTotalJTF;
+        private JComboBoxPersonal nomeClienteJCB, nomeProdutoJCB, formaPagamentoJCB, funcionarioJCB;
         private JTextFieldData txtData;
         private VendaFile vendaFile;
 
@@ -54,7 +54,7 @@ public class VendaVisao extends JFrame {
             idJTF.setFocusable(false);
 
             add(new JLabel("Cliente:"));
-            add(nomeClienteJTF = new JTextField());
+            add(nomeClienteJCB = UInterfaceBox.createJComboBoxsTabela2("NomeCLiente.tab"));
 
             add(new JLabel("Produto:"));
             add(nomeProdutoJCB = UInterfaceBox.createJComboBoxsTabela2("NomeProduto.tab"));
@@ -82,9 +82,7 @@ public class VendaVisao extends JFrame {
         public PainelCentro(VendaModelo modelo) {
             this();
             idJTF.setText("000" + modelo.getId());
-            add(new JLabel("Nome Cliente"));
-            add(nomeClienteJTF = new JTextField());
-            nomeClienteJTF.setText(modelo.getNomeCliente());
+            nomeClienteJCB.setSelectedItem(modelo.getNomeCliente());
             nomeProdutoJCB.setSelectedItem(modelo.getNomeProduto());
             quantidadeJTF.setText(String.valueOf(modelo.getQuantidade()));
             formaPagamentoJCB.setSelectedItem(modelo.getFormaPagamento());
@@ -94,7 +92,7 @@ public class VendaVisao extends JFrame {
         }
 
         public int getId() { return Integer.parseInt(idJTF.getText().trim()); }
-        public String getNomeCliente() { return nomeClienteJTF.getText().trim(); }
+        public String getNomeCliente() { return String.valueOf(nomeClienteJCB.getSelectedItem()); }
         public String getNomeProduto() { return String.valueOf(nomeProdutoJCB.getSelectedItem()); }
         public int getQuantidade() { return Integer.parseInt(quantidadeJTF.getText().trim()); }
         public String getFormaPagamento() { return String.valueOf(formaPagamentoJCB.getSelectedItem()); }
