@@ -110,6 +110,28 @@ public class VendaFile extends ObjectsFile {
 	return null;
 }
 
+public void eliminarDadosPorNome(String nomeProcurado) {
+    VendaModelo modeloAtual = new VendaModelo();
+    try {
+        stream.seek(4);
+        for (int i = 0; i < getNregistos(); ++i) {
+            long pos = stream.getFilePointer();
+            modeloAtual.read(stream);
+            if (modeloAtual.getStatus() && modeloAtual.getNomeCliente().equalsIgnoreCase(nomeProcurado)) {
+                modeloAtual.setStatus(false);
+                stream.seek(pos);
+                modeloAtual.write(stream);
+                JOptionPane.showMessageDialog(null, "Venda eliminada com sucesso pelo nome do cliente!");
+                return;
+            }
+        }
+        JOptionPane.showMessageDialog(null, "Nenhuma venda encontrada para o cliente informado.");
+    } catch (Exception ex) {
+        ex.printStackTrace();
+        JOptionPane.showMessageDialog(null, "Erro ao tentar eliminar venda pelo nome.");
+    }
+}
+
 
 	public static void pesquisarVendaPorId(int idProcurado) {
 		VendaModelo modelo = getVendaPorId(idProcurado);
