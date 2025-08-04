@@ -20,7 +20,7 @@ public class PesquisarReserva extends JFrame {
     }
 
     class PainelCentro extends JPanel implements ActionListener {
-        JComboBox<String> clientesJCB;
+        JTextField nomeClienteJTF;
         JTextFieldData dataJTF;
         JRadioButton pesquisarPorNomeJRB, pesquisarPorDataJRB;
         ButtonGroup group;
@@ -39,9 +39,9 @@ public class PesquisarReserva extends JFrame {
             add(pesquisarPorNomeJRB);
             add(pesquisarPorDataJRB);
 
-            add(new JLabel("Escolha o Nome do Cliente:"));
-            clientesJCB = new JComboBox<>(ReservaFile.getAllClientesReservas());
-            add(clientesJCB);
+            add(new JLabel("Digite o Nome do Cliente:"));
+            nomeClienteJTF = new JTextField();
+            add(nomeClienteJTF);
 
             add(new JLabel("Escolha a Data da Reserva:"));
             dataJTF = new JTextFieldData("dd/mm/yyyy");
@@ -58,11 +58,11 @@ public class PesquisarReserva extends JFrame {
 
         public void actionPerformed(ActionEvent evt) {
             if (evt.getSource() == pesquisarPorNomeJRB) {
-                clientesJCB.setEnabled(true);
+                nomeClienteJTF.setEnabled(true);
                 dataJTF.getDTestField().setEnabled(false);
                 dataJTF.getDButton().setEnabled(false);
             } else if (evt.getSource() == pesquisarPorDataJRB) {
-                clientesJCB.setEnabled(false);
+                nomeClienteJTF.setEnabled(false);
                 dataJTF.getDTestField().setEnabled(true);
                 dataJTF.getDButton().setEnabled(true);
             }
@@ -73,7 +73,7 @@ public class PesquisarReserva extends JFrame {
         }
 
         public String getClienteProcurado() {
-            return String.valueOf(clientesJCB.getSelectedItem());
+            return nomeClienteJTF.getText().trim();
         }
 
         public String getDataProcurada() {
@@ -100,6 +100,10 @@ public class PesquisarReserva extends JFrame {
                 if (centro.getTipoPesquisa() == 1) {
                     // Pesquisar por nome do cliente
                     String cliente = centro.getClienteProcurado();
+                    if (cliente.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Por favor, digite o nome do cliente.");
+                        return;
+                    }
                     ReservaModelo modelo = ReservaFile.getReservaPorCliente(cliente);
                     if (modelo != null && modelo.getStatus()) {
                         JOptionPane.showMessageDialog(null, modelo.toString(), "Reserva Encontrada", JOptionPane.INFORMATION_MESSAGE);
