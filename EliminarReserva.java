@@ -1,11 +1,3 @@
-/*------------------------------------
-Tema: Gestão de uma Barbearia
-Nome: Enio Manuel
-Número: 2817
-Ficheiro: EliminarReserva.java
-Data: 10.07.2025
---------------------------------------*/
-
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
@@ -29,31 +21,32 @@ public class EliminarReserva extends JFrame {
         setVisible(true);
     }
 
-    class PainelCentro extends JPanel implements ActionListener {
-        JComboBox clientesJCB;
-        JRadioButton pesquisarPorClienteJRB;
-        ButtonGroup group;
+    class PainelCentro extends JPanel {
+        JTextField nomeClienteJTF;
+        JTextField idReservaJTF;
 
         public PainelCentro() {
             setLayout(new GridLayout(2, 2, 10, 10));
 
-            group = new ButtonGroup();
+            add(new JLabel("Digite o Nome do Cliente:"));
+            nomeClienteJTF = new JTextField();
+            add(nomeClienteJTF);
 
-            add(pesquisarPorClienteJRB = new JRadioButton("Pesquisar por Cliente", true));
-            group.add(pesquisarPorClienteJRB);
-
-            add(new JLabel("Escolha o Cliente"));
-            add(clientesJCB = new JComboBox(ReservaFile.getAllClientesReservas()));
-
-            pesquisarPorClienteJRB.addActionListener(this);
+            add(new JLabel("Digite o ID da Reserva:"));
+            idReservaJTF = new JTextField();
+            add(idReservaJTF);
         }
 
-        public void actionPerformed(ActionEvent evt) {
-            // Nada necessário aqui, pois só há um modo de pesquisa
+        public String getNomeCliente() {
+            return nomeClienteJTF.getText().trim();
         }
 
-        public String getClienteProcurado() {
-            return String.valueOf(clientesJCB.getSelectedItem());
+        public int getIdReserva() {
+            try {
+                return Integer.parseInt(idReservaJTF.getText().trim());
+            } catch (NumberFormatException e) {
+                return -1; // ID inválido
+            }
         }
     }
 
@@ -70,7 +63,21 @@ public class EliminarReserva extends JFrame {
 
         public void actionPerformed(ActionEvent evt) {
             if (evt.getSource() == eliminarJB) {
-                ReservaModelo modelo = ReservaFile.getReservaPorCliente(centro.getClienteProcurado());
+                ReservaModelo modelo = null;
+
+                // Tentar buscar por ID primeiro, se válido
+                int id = centro.getIdReserva();
+                if (id > 0) {
+                    modelo = ReservaFile.getReservaPorId(id);
+                }
+
+                // Se não encontrou por ID, tenta buscar pelo nome
+                if (modelo == null) {
+                    String nome = centro.getNomeCliente();
+                    if (!nome.isEmpty()) {
+                        modelo = ReservaFile.getReservaPorCliente(nome);
+                    }
+                }
 
                 if (modelo != null && modelo.getStatus()) {
                     JOptionPane.showMessageDialog(null, modelo.toString());

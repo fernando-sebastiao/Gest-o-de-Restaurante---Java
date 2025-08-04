@@ -80,6 +80,24 @@ public class ReservaFile extends ObjectsFile {
 		}
 	}
 
+	public static ReservaModelo getReservaPorId(int idProcurado) {
+    ReservaFile ficheiro = new ReservaFile();
+    ReservaModelo modelo = new ReservaModelo();
+    try {
+        ficheiro.stream.seek(4); // Pula os 4 bytes do header (se for assim no seu arquivo)
+        for (int i = 0; i < ficheiro.getNregistos(); ++i) {
+            modelo.read(ficheiro.stream);
+            if (modelo.getId() == idProcurado && modelo.getStatus()) {
+                return modelo;
+            }
+        }
+    } catch (Exception ex) {
+        ex.printStackTrace();
+    }
+    return null;
+}
+
+
 	// Buscar reserva por cliente
 	public static ReservaModelo getReservaPorCliente(String clienteProcurado) {
 		ReservaFile ficheiro = new ReservaFile();
