@@ -20,15 +20,15 @@ public class PesquisarCliente extends JFrame {
     }
 
     class PainelCentro extends JPanel {
-        JComboBox nomesJCB;
+        JTextField nomeField;
         JTextField idField;
 
         public PainelCentro() {
             setLayout(new GridLayout(3, 2, 10, 10));
 
-            add(new JLabel("Escolha o Nome:"));
-            nomesJCB = new JComboBox(ClienteFile.getAllNomesClientes());
-            add(nomesJCB);
+                add(new JLabel("Digite o Nome:"));
+                nomeField = new JTextField();
+                add(nomeField);
 
             add(new JLabel("Ou digite o ID:"));
             idField = new JTextField();
@@ -36,7 +36,7 @@ public class PesquisarCliente extends JFrame {
         }
 
         public String getNomeProcurado() {
-            return String.valueOf(nomesJCB.getSelectedItem());
+            return nomeField.getText().trim();
         }
 
         public String getIdProcurado() {
