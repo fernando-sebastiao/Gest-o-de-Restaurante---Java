@@ -1,17 +1,8 @@
-/*------------------------------------
-Tema: Gestão de um Restaurante
-Nome: Fernando Afonso Sebastiao
-Numero: 34422
-Ficheiro: ClienteModelo.java
-Data: 10.07.2025
---------------------------------------*/
-
 import javax.swing.*;
-import java.awt.event.*;
 import java.awt.*;
+import java.awt.event.*;
 import SwingComponents.*;
 import Calendario.*;
-import javax.swing.UIManager.*;
 
 public class PesquisarCliente extends JFrame {
     PainelCentro centro;
@@ -30,17 +21,26 @@ public class PesquisarCliente extends JFrame {
 
     class PainelCentro extends JPanel {
         JComboBox nomesJCB;
+        JTextField idField;
 
         public PainelCentro() {
-            setLayout(new GridLayout(2, 2, 10, 10));
+            setLayout(new GridLayout(3, 2, 10, 10));
 
             add(new JLabel("Escolha o Nome:"));
             nomesJCB = new JComboBox(ClienteFile.getAllNomesClientes());
             add(nomesJCB);
+
+            add(new JLabel("Ou digite o ID:"));
+            idField = new JTextField();
+            add(idField);
         }
 
         public String getNomeProcurado() {
             return String.valueOf(nomesJCB.getSelectedItem());
+        }
+
+        public String getIdProcurado() {
+            return idField.getText().trim();
         }
     }
 
@@ -57,9 +57,22 @@ public class PesquisarCliente extends JFrame {
 
         public void actionPerformed(ActionEvent evt) {
             if (evt.getSource() == pesquisarJB) {
-                String nome = centro.getNomeProcurado();
-                ClienteModelo modelo = ClienteFile.getClientePorNome(nome);
-                
+                ClienteModelo modelo = null;
+
+                String idTexto = centro.getIdProcurado();
+                if (!idTexto.isEmpty()) {
+                    try {
+                        int id = Integer.parseInt(idTexto);
+                        modelo = ClienteFile.getClientePorId(id);
+                    } catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(null, "ID inválido.");
+                        return;
+                    }
+                } else {
+                    String nome = centro.getNomeProcurado();
+                    modelo = ClienteFile.getClientePorNome(nome);
+                }
+
                 if (modelo != null && modelo.getStatus()) {
                     JOptionPane.showMessageDialog(null, modelo.toString(), "Cliente Encontrado", JOptionPane.INFORMATION_MESSAGE);
                 } else {
