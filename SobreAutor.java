@@ -13,7 +13,7 @@ public class SobreAutor extends JDialog {
         textArea.setEditable(false);
         textArea.setText(
             "Autor: Fernando Afonso Sebastião\n" +
-            "Data de Nascimento: 10 de Maio de 2025\n\n" +
+            "Data de Nascimento: 10 de Maio de 2005\n\n" +
             "Desenvolvedor Backend utilizando:\n" +
             "- NestJS\n" +
             "- Node.js\n" +
