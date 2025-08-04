@@ -27,6 +27,10 @@ public class MenuPrincipal extends JFrame implements ActionListener
     {
         super("Menu Principal | Operador " + user);
 
+        //Painel com imagem central (capa)
+		PainelCentro painelcentro = new PainelCentro();
+		add( painelcentro, BorderLayout.CENTER);
+
         instanciarObjetos();
 
         setJMenuBar(menuBar);
@@ -233,6 +237,19 @@ public class MenuPrincipal extends JFrame implements ActionListener
         else if(event.getSource() == sairItem)
             dispose();
     }
+
+    class PainelCentro extends JPanel
+	{
+		public PainelCentro() 
+		{
+			setLayout(new BorderLayout());
+			ImageIcon icon = new ImageIcon("image/Pictures/restaurantePrincipal.png");
+			Image img = icon.getImage().getScaledInstance(900, 600, Image.SCALE_SMOOTH);
+			JLabel label = new JLabel(new ImageIcon(img));
+			add(label, BorderLayout.CENTER);
+			
+		}	
+	}	
 
     public static void main(String[] args)
     {
