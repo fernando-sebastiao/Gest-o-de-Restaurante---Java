@@ -20,54 +20,52 @@ public class EliminarCliente extends JFrame {
         setVisible(true);
     }
 
-   class PainelCentro extends JPanel {
-    JComboBox nomesJCB;
-    JTextField idField;
+    class PainelCentro extends JPanel {
+        JTextField nomeField;
+        JTextField idField;
 
-    public PainelCentro() {
-        setLayout(new GridLayout(3, 2, 10, 10));
+        public PainelCentro() {
+            setLayout(new GridLayout(3, 2, 10, 10));
 
-        add(new JLabel("Escolha o Nome do Cliente:"));
-        nomesJCB = new JComboBox(ClienteFile.getAllNomesClientes());
-        add(nomesJCB);
+            add(new JLabel("Digite o Nome do Cliente:"));
+            nomeField = new JTextField();
+            add(nomeField);
 
-        add(new JLabel("Ou insira o ID do Cliente:"));
-        idField = new JTextField();
-        add(idField);
+            add(new JLabel("Ou insira o ID do Cliente:"));
+            idField = new JTextField();
+            add(idField);
 
-        // Adiciona escuta para o campo de ID
-        idField.addKeyListener(new KeyAdapter() {
-            public void keyReleased(KeyEvent e) {
-                if (!idField.getText().trim().isEmpty()) {
-                    nomesJCB.setEnabled(false);
-                } else {
-                    nomesJCB.setEnabled(true);
+            // Ativa/desativa o campo ID conforme preenchimento do nome
+            nomeField.addKeyListener(new KeyAdapter() {
+                public void keyReleased(KeyEvent e) {
+                    if (!nomeField.getText().trim().isEmpty()) {
+                        idField.setEnabled(false);
+                    } else {
+                        idField.setEnabled(true);
+                    }
                 }
-            }
-        });
+            });
 
-        // Adiciona escuta para o combo de nomes
-        nomesJCB.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (nomesJCB.isEnabled()) {
-                    idField.setText("");
-                    idField.setEnabled(false);
-                } else {
-                    idField.setEnabled(true);
+            // Ativa/desativa o campo nome conforme preenchimento do ID
+            idField.addKeyListener(new KeyAdapter() {
+                public void keyReleased(KeyEvent e) {
+                    if (!idField.getText().trim().isEmpty()) {
+                        nomeField.setEnabled(false);
+                    } else {
+                        nomeField.setEnabled(true);
+                    }
                 }
-            }
-        });
-    }
+            });
+        }
 
-    public String getNomeProcurado() {
-        return String.valueOf(nomesJCB.getSelectedItem());
-    }
+        public String getNomeProcurado() {
+            return nomeField.getText().trim();
+        }
 
-    public String getIdDigitado() {
-        return idField.getText().trim();
+        public String getIdDigitado() {
+            return idField.getText().trim();
+        }
     }
-}
-
 
     class PainelSul extends JPanel implements ActionListener {
         JButton eliminarJB, cancelarJB;
@@ -84,7 +82,6 @@ public class EliminarCliente extends JFrame {
             if (evt.getSource() == eliminarJB) {
                 ClienteModelo modelo = null;
 
-                // Se o ID for informado, buscar por ID
                 String idTexto = centro.getIdDigitado();
                 if (!idTexto.isEmpty()) {
                     try {
@@ -95,14 +92,15 @@ public class EliminarCliente extends JFrame {
                         return;
                     }
                 } else {
-                    // Caso contrário, buscar por nome
                     modelo = ClienteFile.getClientePorNome(centro.getNomeProcurado());
                 }
 
                 if (modelo != null && modelo.getStatus()) {
                     JOptionPane.showMessageDialog(null, modelo.toString());
 
-                    int opcao = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja eliminar este cliente?", "Confirmação", JOptionPane.YES_NO_OPTION);
+                    int opcao = JOptionPane.showConfirmDialog(null,
+                            "Tem certeza que deseja eliminar este cliente?",
+                            "Confirmação", JOptionPane.YES_NO_OPTION);
 
                     if (opcao == JOptionPane.YES_OPTION) {
                         new ClienteFile().eliminarDados(modelo);
