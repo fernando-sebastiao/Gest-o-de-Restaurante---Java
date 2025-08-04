@@ -22,6 +22,7 @@ public class MenuPrincipal extends JFrame implements ActionListener
     private JMenuItem novoProdutoItem, editarProdutoItem, eliminarProdutoItem, listarProdutosItem, pesquisarProdutoItem;
     private JMenuItem novaVendaItem, editarVendaItem, eliminarVendaItem, listarVendasItem, pesquisarVendaItem;
     private JMenuItem nacionalidadeItem, provinciaItem, municipioItem, comunaItem, metodoPagamentoItem, nomeClienteItem, nomeProdutoItem, nomeFuncionarioItem, nomeMesaItem;
+    private JMenuItem sobreAutorItem, sobreSistemaItem;
 
     public MenuPrincipal(String user)
     {
@@ -112,6 +113,10 @@ public class MenuPrincipal extends JFrame implements ActionListener
         listagemMenu.add(listarProdutosItem = new JMenuItem("Listar Produto", new ImageIcon("image/listagens-all.png")));
         listagemMenu.add(listarVendasItem = new JMenuItem("Listar Vendas", new ImageIcon("image/listagens-all.png")));
 
+        //AjudaMenu
+        ajudaMenu.add(sobreAutorItem = new JMenuItem("Sobre o Autor"));
+        ajudaMenu.add(sobreSistemaItem = new JMenuItem("Sobre o Sistema"));
+
         // instanciando os elementos do tabelaMenu
         tabelaMenu.add(nomeClienteItem = new JMenuItem("Nome do Cliente"));
         tabelaMenu.add(nomeProdutoItem = new JMenuItem("Nome do Produto"));
@@ -162,6 +167,10 @@ public class MenuPrincipal extends JFrame implements ActionListener
         metodoPagamentoItem.addActionListener(this);
         nomeFuncionarioItem.addActionListener(this);
         nomeMesaItem.addActionListener(this);
+
+        //Menu Ajuda
+        sobreAutorItem.addActionListener(this);
+        sobreSistemaItem.addActionListener(this);
     }
 
     public void actionPerformed(ActionEvent event)
@@ -234,6 +243,10 @@ public class MenuPrincipal extends JFrame implements ActionListener
         else if(event.getSource() == comunaItem)
             Tabela3_3.editarNovosItems("Provincias.tab", "Municipios.tab", "Comunas.tab", 
             "Provincia", "Municipio", "Comuna", "Nova Comuna");
+        else if(event.getSource() == sobreAutorItem)
+            new SobreAutor(this);
+        else if(event.getSource() == sobreSistemaItem)
+            new SobreSistema(this);
         else if(event.getSource() == sairItem)
             dispose();
     }
