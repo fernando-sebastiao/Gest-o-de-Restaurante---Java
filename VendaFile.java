@@ -70,6 +70,24 @@ public class VendaFile extends ObjectsFile {
 		}
 	}
 
+	public static VendaModelo getVendaPorNome(String nomeProcurado) {
+    VendaFile ficheiro = new VendaFile();
+    VendaModelo modelo = new VendaModelo();
+    try {
+        ficheiro.stream.seek(4);
+        for (int i = 0; i < ficheiro.getNregistos(); ++i) {
+            modelo.read(ficheiro.stream);
+            if (modelo.getStatus() && modelo.getNomeCliente().equalsIgnoreCase(nomeProcurado)) {
+                return modelo;
+            }
+        }
+    } catch (Exception ex) {
+        ex.printStackTrace();
+    }
+    return null;
+}
+
+
 	public static VendaModelo getVendaPorId(int idProcurado) {
 		VendaFile ficheiro = new VendaFile();
 		VendaModelo modelo = new VendaModelo();
