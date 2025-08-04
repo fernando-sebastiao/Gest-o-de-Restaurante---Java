@@ -41,8 +41,8 @@ public class ClienteVisao extends JFrame
 
     class PainelCentro extends JPanel
     {
-        private JTextField idJTF, contactoJTF;
-        private JComboBox generoJCB, nacionalidadeJCB, provinciaJCB, municipioJCB, comunaJCB, nomeJCB;
+        private JTextField idJTF, contactoJTF, nomeJTF;
+        private JComboBox generoJCB, nacionalidadeJCB, provinciaJCB, municipioJCB, comunaJCB;
         private JComboBoxTabela3_Tabela3 provinciaComMunicipio;
         private String[] arrayGenero = {"Masculino", "Feminino"};
         private ClienteFile file;
@@ -61,7 +61,7 @@ public class ClienteVisao extends JFrame
 
             // 2º linha
             add(new JLabel("Nome"));
-            add(nomeJCB = UInterfaceBox.createJComboBoxsTabela2("NomeCLiente.tab"));
+            add(nomeJTF = new JTextField());
 
             // 3º linha 
             add(new JLabel("Contacto"));
@@ -104,8 +104,8 @@ public class ClienteVisao extends JFrame
 
             // 2º linha
             add(new JLabel("Nome"));
-            add(nomeJCB = UInterfaceBox.createJComboBoxsTabela2("NomeCLiente.tab"));
-            nomeJCB.setSelectedItem(modelo.getNome());
+            add(nomeJTF = new JTextField() );
+            nomeJTF.setText(modelo.getNome());
 
             // 3º linha 
             add(new JLabel("Contacto"));
@@ -146,7 +146,7 @@ public class ClienteVisao extends JFrame
 
         public String getNome()
         {
-            return String.valueOf(nomeJCB.getSelectedItem());
+            return nomeJTF.getText().trim();
         }
 
         public String getContacto()
@@ -187,7 +187,7 @@ public class ClienteVisao extends JFrame
 
         public void setNome(String nome)
         {
-            nomeJCB.setSelectedItem(nome);
+            nomeJTF.setText(nome);
         }
 
         public void setContacto(String contacto)
