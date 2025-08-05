@@ -16,12 +16,13 @@ import Calendario.*;
 public class MenuPrincipal extends JFrame implements ActionListener
 {
     private JMenuBar menuBar;
-    private JMenu clienteMenu, reservaMenu,produtoMenu,vendaMenu,tabelaMenu, listagemMenu,ajudaMenu;
+    private JMenu clienteMenu, reservaMenu,produtoMenu,vendaMenu,tabelaMenu, listagemMenu, defesaMenu, ajudaMenu;
     private JMenuItem novoClienteItem, editarClienteItem, eliminarClienteItem, sairItem, listagemClienteItem, pesquisarClienteItem;
     private JMenuItem novaReservaItem, editarReservaItem, eliminarReservaItem, listarReservasItem, pesquisarReservaItem;
     private JMenuItem novoProdutoItem, editarProdutoItem, eliminarProdutoItem, listarProdutosItem, pesquisarProdutoItem;
     private JMenuItem novaVendaItem, editarVendaItem, eliminarVendaItem, listarVendasItem, pesquisarVendaItem;
     private JMenuItem nacionalidadeItem, provinciaItem, municipioItem, comunaItem, metodoPagamentoItem, nomeClienteItem, nomeProdutoItem, nomeFuncionarioItem, nomeMesaItem;
+    private JMenuItem dioceseItem, paroquiaItem, pesquisarDefesaItem;
     private JMenuItem sobreAutorItem, sobreSistemaItem;
 
     public MenuPrincipal(String user)
@@ -71,6 +72,10 @@ public class MenuPrincipal extends JFrame implements ActionListener
         menuBar.add(tabelaMenu = new JMenu("Tabelas"));
         tabelaMenu.setIcon(new ImageIcon("image/tabela.png"));
         tabelaMenu.setMnemonic('T');
+
+        menuBar.add(defesaMenu= new JMenu("Defesa"));
+        defesaMenu.setIcon(new ImageIcon("image/all/hat32.png"));
+        defesaMenu.setMnemonic('D');
         
         menuBar.add(ajudaMenu = new JMenu("Ajuda"));
         ajudaMenu.setIcon(new ImageIcon("image/help.png"));
@@ -117,6 +122,9 @@ public class MenuPrincipal extends JFrame implements ActionListener
         ajudaMenu.add(sobreAutorItem = new JMenuItem("Sobre o Autor"));
         ajudaMenu.add(sobreSistemaItem = new JMenuItem("Sobre o Sistema"));
 
+        //DefesaMenu
+        defesaMenu.add(pesquisarDefesaItem = new JMenuItem("Pesquisar Defesa"));
+
         // instanciando os elementos do tabelaMenu
         tabelaMenu.add(nomeClienteItem = new JMenuItem("Nome do Cliente"));
         tabelaMenu.add(nomeProdutoItem = new JMenuItem("Nome do Produto"));
@@ -127,6 +135,8 @@ public class MenuPrincipal extends JFrame implements ActionListener
         tabelaMenu.add(metodoPagamentoItem = new JMenuItem("Metodos de Pagamento"));
         tabelaMenu.add(nomeMesaItem = new JMenuItem("Nome Da Mesa"));
         tabelaMenu.add(nomeFuncionarioItem = new JMenuItem("Nome Do Funcionário"));
+        tabelaMenu.add(dioceseItem = new JMenuItem("Dioceses"));
+        tabelaMenu.add(paroquiaItem = new JMenuItem("Paróquias"));
 
         // adicionar evento no cliente
         novoClienteItem.addActionListener(this);
@@ -167,7 +177,10 @@ public class MenuPrincipal extends JFrame implements ActionListener
         metodoPagamentoItem.addActionListener(this);
         nomeFuncionarioItem.addActionListener(this);
         nomeMesaItem.addActionListener(this);
+        dioceseItem.addActionListener(this);
+        paroquiaItem.addActionListener(this);
 
+        pesquisarDefesaItem.addActionListener(this);
         //Menu Ajuda
         sobreAutorItem.addActionListener(this);
         sobreSistemaItem.addActionListener(this);
@@ -243,10 +256,16 @@ public class MenuPrincipal extends JFrame implements ActionListener
         else if(event.getSource() == comunaItem)
             Tabela3_3.editarNovosItems("Provincias.tab", "Municipios.tab", "Comunas.tab", 
             "Provincia", "Municipio", "Comuna", "Nova Comuna");
+        else if(event.getSource() == pesquisarDefesaItem)
+             new FrmDefesa();
         else if(event.getSource() == sobreAutorItem)
             new SobreAutor(this);
         else if(event.getSource() == sobreSistemaItem)
-            new SobreSistema(this);
+         new SobreSistema(this);
+         else if (event.getSource() == dioceseItem) 
+         Tabela2.editarNovosItems("Diocese.tab", "Adicionar Diocese");
+        else if (event.getSource() == paroquiaItem) 
+        Tabela3_2.editarNovosItems("Diocese.tab", "Paroquia.tab", "Diocese", "Paróquia", "Adicionar Paróquia");
         else if(event.getSource() == sairItem)
             dispose();
     }
