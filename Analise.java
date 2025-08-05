@@ -23,7 +23,9 @@ processamento de vendas e reservas de mesas.
 - ClienteModelo
 	int id
 	String nome
-	String bi
+	String nacionalidade
+	string Munipio
+	string comuna
 	String genero
 	int telefone
 
