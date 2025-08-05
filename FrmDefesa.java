@@ -17,17 +17,18 @@ public class FrmDefesa extends JFrame {
 
         vendaFile = new VendaFile();
 
-        // Painel para pesquisa
+        // Painel de pesquisa
         JPanel painelPesquisa = new JPanel(new FlowLayout(FlowLayout.LEFT));
         pesquisarTF = new JTextField(20);
-        pesquisarJB = new JButton("Pesquisar");
-        painelPesquisa.add(new JLabel("Pesquisar Cliente ou Data:"));
+        pesquisarJB = new JButton("Pesquisar (Excluir Data)");
+
+        painelPesquisa.add(new JLabel("Digite a Data a Ser Excluída:"));
         painelPesquisa.add(pesquisarTF);
         painelPesquisa.add(pesquisarJB);
 
         add(painelPesquisa, BorderLayout.NORTH);
 
-        // Definindo colunas da tabela
+        // Colunas da tabela
         String[] colunas = {
             "ID", "Cliente", "Produto", "Quantidade",
             "Pagamento", "Funcionário", "Data", "Valor Total"
@@ -36,7 +37,7 @@ public class FrmDefesa extends JFrame {
         modeloTabela = new DefaultTableModel(colunas, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false; // Desativa edição das células
+                return false;
             }
         };
 
@@ -48,10 +49,10 @@ public class FrmDefesa extends JFrame {
 
         add(scroll, BorderLayout.CENTER);
 
-        carregarDadosTabela();
+        carregarDadosTabela(); // Carrega todos inicialmente
 
-        // Ação do botão pesquisar
-        pesquisarJB.addActionListener(e -> pesquisar());
+        // Ação do botão
+        pesquisarJB.addActionListener(e -> filtrarPorDataDiferente());
 
         setSize(900, 400);
         setLocationRelativeTo(null);
@@ -59,8 +60,9 @@ public class FrmDefesa extends JFrame {
         setVisible(true);
     }
 
+    // Carrega todos os dados
     private void carregarDadosTabela() {
-        modeloTabela.setRowCount(0); // Limpa tabela
+        modeloTabela.setRowCount(0);
 
         ArrayList<VendaModelo> lista = vendaFile.listarDados();
         for (VendaModelo vm : lista) {
@@ -78,9 +80,10 @@ public class FrmDefesa extends JFrame {
         }
     }
 
-    private void pesquisar() {
-        String termo = pesquisarTF.getText().trim().toLowerCase();
-        if (termo.isEmpty()) {
+    // Filtra os registros com data diferente
+    private void filtrarPorDataDiferente() {
+        String dataExcluida = pesquisarTF.getText().trim().toLowerCase();
+        if (dataExcluida.isEmpty()) {
             carregarDadosTabela();
             return;
         }
@@ -89,8 +92,7 @@ public class FrmDefesa extends JFrame {
 
         ArrayList<VendaModelo> lista = vendaFile.listarDados();
         for (VendaModelo vm : lista) {
-            if (vm.getNomeCliente().toLowerCase().contains(termo) ||
-                vm.getDataVenda().toLowerCase().contains(termo)) {
+            if (!vm.getDataVenda().toLowerCase().equals(dataExcluida)) {
                 Object[] linha = {
                     vm.getId(),
                     vm.getNomeCliente(),
