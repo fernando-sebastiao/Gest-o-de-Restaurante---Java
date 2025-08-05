@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class FrmDefesa extends JFrame {
     private JTable tabela;
     private DefaultTableModel modeloTabela;
-    private VendaFile vendaFile;  // Aqui, uso VendaFile para ler vendas
+    private VendaFile vendaFile;
 
     private JTextField pesquisarTF;
     private JButton pesquisarJB;
@@ -15,13 +15,13 @@ public class FrmDefesa extends JFrame {
         super("Lista de Defesas");
         setLayout(new BorderLayout(10, 10));
 
-        vendaFile = new VendaFile();  // Instancia o arquivo de vendas
+        vendaFile = new VendaFile();
 
         // Painel para pesquisa
         JPanel painelPesquisa = new JPanel(new FlowLayout(FlowLayout.LEFT));
         pesquisarTF = new JTextField(20);
         pesquisarJB = new JButton("Pesquisar");
-        painelPesquisa.add(new JLabel("Pesquisar Defesa:"));
+        painelPesquisa.add(new JLabel("Pesquisar Cliente ou Data:"));
         painelPesquisa.add(pesquisarTF);
         painelPesquisa.add(pesquisarJB);
 
@@ -62,7 +62,7 @@ public class FrmDefesa extends JFrame {
     private void carregarDadosTabela() {
         modeloTabela.setRowCount(0); // Limpa tabela
 
-        ArrayList<VendaModelo> lista = vendaFile.listarDados();  // Usando método do VendaFile
+        ArrayList<VendaModelo> lista = vendaFile.listarDados();
         for (VendaModelo vm : lista) {
             Object[] linha = {
                 vm.getId(),
@@ -85,11 +85,12 @@ public class FrmDefesa extends JFrame {
             return;
         }
 
-        modeloTabela.setRowCount(0); // Limpa tabela
+        modeloTabela.setRowCount(0);
 
         ArrayList<VendaModelo> lista = vendaFile.listarDados();
         for (VendaModelo vm : lista) {
-            if (vm.getNomeCliente().toLowerCase().contains(termo)) {
+            if (vm.getNomeCliente().toLowerCase().contains(termo) ||
+                vm.getDataVenda().toLowerCase().contains(termo)) {
                 Object[] linha = {
                     vm.getId(),
                     vm.getNomeCliente(),
