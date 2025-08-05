@@ -1,11 +1,3 @@
-/*------------------------------------
-Tema: Gestão de um Restaurante
-Nome: Fernando Afonso Sebastiao
-Numero: 34422
-Ficheiro: EditarCliente.java
-Data: 10.07.2025
---------------------------------------*/
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -29,55 +21,62 @@ public class EditarCliente extends JFrame {
     }
 
     class PainelCentro extends JPanel implements ActionListener {
-        JComboBox nomesJCB;
-        /* JTextField bilheteJTF; */
-        JRadioButton pesquisarPorNomeJRB, pesquisarPorBIJRB;
+        JRadioButton pesquisarPorNomeJRB, pesquisarPorIDJRB;
         ButtonGroup group;
+        JTextField nomeJTF, idJTF;
 
         public PainelCentro() {
             setLayout(new GridLayout(3, 2, 10, 10));
 
             group = new ButtonGroup();
 
-            add(pesquisarPorNomeJRB = new JRadioButton("Pesquisar Por Nome", true));
-            /* add(pesquisarPorBIJRB = new JRadioButton("Pesquisar Por BI", false)); */
+            pesquisarPorNomeJRB = new JRadioButton("Pesquisar Por Nome", true);
+            pesquisarPorIDJRB = new JRadioButton("Pesquisar Por ID");
+
             group.add(pesquisarPorNomeJRB);
-            /* group.add(pesquisarPorBIJRB); */
+            group.add(pesquisarPorIDJRB);
 
-            add(new JLabel("Escolha o Nome Procurado"));
-            nomesJCB = new JComboBox(ClienteFile.getAllNomesClientes());
-            add(nomesJCB);
+            nomeJTF = new JTextField();
+            idJTF = new JTextField();
+            idJTF.setEnabled(false); // inicialmente desabilitado
 
-            /* add(new JLabel("Digite o número do BI"));
-            bilheteJTF = new JTextField();
-            bilheteJTF.setEnabled(false);
-            add(bilheteJTF); */
+            add(pesquisarPorNomeJRB);
+            add(pesquisarPorIDJRB);
+
+            add(new JLabel("Nome do Cliente:"));
+            add(nomeJTF);
+
+            add(new JLabel("ID do Cliente:"));
+            add(idJTF);
 
             pesquisarPorNomeJRB.addActionListener(this);
-            /* pesquisarPorBIJRB.addActionListener(this); */
+            pesquisarPorIDJRB.addActionListener(this);
         }
 
-        public void actionPerformed(ActionEvent evt) {
-            if (evt.getSource() == pesquisarPorNomeJRB) {
-                nomesJCB.setEnabled(true);
-                /* bilheteJTF.setEnabled(false); */
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (pesquisarPorNomeJRB.isSelected()) {
+                nomeJTF.setEnabled(true);
+                idJTF.setEnabled(false);
+                idJTF.setText("");
             } else {
-                nomesJCB.setEnabled(false);
-                /* bilheteJTF.setEnabled(true); */
+                nomeJTF.setEnabled(false);
+                nomeJTF.setText("");
+                idJTF.setEnabled(true);
             }
         }
 
-        public int getTipoPesquisa() {
-            return pesquisarPorNomeJRB.isSelected() ? 1 : 2;
+        public boolean isPesquisaPorNome() {
+            return pesquisarPorNomeJRB.isSelected();
         }
 
         public String getNomeProcurado() {
-            return String.valueOf(nomesJCB.getSelectedItem());
+            return nomeJTF.getText().trim();
         }
 
-        /* public String getBIProcurado() {
-            return bilheteJTF.getText().trim();
-        } */
+        public String getIDProcurado() {
+            return idJTF.getText().trim();
+        }
     }
 
     class PainelSul extends JPanel implements ActionListener {
@@ -91,15 +90,32 @@ public class EditarCliente extends JFrame {
             cancelarJB.addActionListener(this);
         }
 
+        @Override
         public void actionPerformed(ActionEvent evt) {
             if (evt.getSource() == pesquisarJB) {
                 ClienteModelo modelo = null;
 
-                if (centro.getTipoPesquisa() == 1) {
-                    modelo = ClienteFile.getClientePorNome(centro.getNomeProcurado());
-                }/*  else {
-                    modelo = ClienteFile.getClientePorBI(centro.getBIProcurado());
-                } */
+                if (centro.isPesquisaPorNome()) {
+                    String nome = centro.getNomeProcurado();
+                    if (nome.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Por favor, digite o nome do cliente.");
+                        return;
+                    }
+                    modelo = ClienteFile.getClientePorNome(nome);
+                } else {
+                    String idStr = centro.getIDProcurado();
+                    if (idStr.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Por favor, digite o ID do cliente.");
+                        return;
+                    }
+                    try {
+                        int id = Integer.parseInt(idStr);
+                        modelo = ClienteFile.getClientePorId(id);
+                    } catch (NumberFormatException e) {
+                        JOptionPane.showMessageDialog(null, "ID inválido. Digite um número inteiro.");
+                        return;
+                    }
+                }
 
                 if (modelo != null) {
                     new ClienteVisao(true, modelo);

@@ -23,7 +23,9 @@ processamento de vendas e reservas de mesas.
 - ClienteModelo
 	int id
 	String nome
-	String bi
+	String nacionalidade
+	string Munipio
+	string comuna
 	String genero
 	int telefone
 
@@ -69,13 +71,13 @@ processamento de vendas e reservas de mesas.
 
 6. Listagens e Pesquisas
 - Listagem geral de Clientes
+- Listagem cliente pelo id do cliente
 - Pesquisa de Cliente por Nome
 - Listagem geral de Produtos
 - Pesquisa de Produto por Nome
 - Listagem geral de Vendas
 - Pesquisa de Venda por Data
 - Listagem geral de Reservas
-- Pesquisa de Reserva por Data
 
 7. Diversos
 7.1 - Implementação: Linguagem C (ou Java, conforme usado)

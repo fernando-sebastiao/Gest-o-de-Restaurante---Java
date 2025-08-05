@@ -1,7 +1,7 @@
 /*------------------------------------
 Tema: Gestão de um Restaurante
-Nome: Fernando Afonso Sebastiao
-Numero: 34422
+Nome: Fernando Afonso Sebastião
+Número: 34422
 Ficheiro: ApresentacaoVisao.java
 Data: 11.07.2025
 --------------------------------------*/
@@ -16,13 +16,12 @@ import Calendario.*;
 
 public class ApresentacaoVisao extends JFrame 
 {
-    
     private PainelCentro centro;
     private PainelSul sul;
 
     public ApresentacaoVisao()
     {
-        super("Tela de Boas Vindas");
+        super("Tela de Boas-Vindas");
 
         JPanel painelNorte = new JPanel();
         JLabel lbImagem = new JLabel(new ImageIcon("image/descarregar (1).jpg"));
@@ -38,51 +37,50 @@ public class ApresentacaoVisao extends JFrame
 
     class PainelCentro extends JPanel implements ActionListener
     {
-            JTextArea areaPrincipal;
-            JCheckBox concordarJCB;
-            public PainelCentro()
-            {
-                setLayout(new GridLayout(2, 1));
-                
-                add(new JScrollPane(areaPrincipal = new JTextArea(80 , 60)));
-                areaPrincipal.setFocusable(false);
-                areaPrincipal.setText("Bem Vindo ao Sistema de Gestao da Barbearia.\n" +
-                "\tTema: Gestao de Barbearia\n" +
-                "Este projeto tem o objetivo de gerir informacoes relacionadas ao atendimento de clientes\n" +
-                "permitindo o cadastro de clientes, marcacao de horarios, controle de pagamentos ." +
-                "Este projeto foi desenvolvido no ambito da cadeira de Fundamentos de Programacao 2,\n" +
-                "no Curso de Engenharia Informatica na UCAN. E de uso exclusivo aos Recursos Humanos.\n" +
-                "Este projeto foi desenvolvido para facilitar o controlo e gestão da informação sobre os clientes da barbearia,\n" +
-                "permitindo localizar os dados de forma concisa e segura.\n" +
-                "Este projeto foi desenvolvido por Enio Manuel, estudante do 1º ano, ID: 2817.\n" +
-                "Se concorda com os termos e condições clique em Concordar para Continuar");
+        JTextArea areaPrincipal;
+        JCheckBox concordarJCB;
 
+        public PainelCentro()
+        {
+            setLayout(new GridLayout(2, 1));
+            
+            add(new JScrollPane(areaPrincipal = new JTextArea(80 , 60)));
+            areaPrincipal.setFocusable(false);
+            areaPrincipal.setText(
+                "Bem-vindo ao Sistema de Gestão de um Restaurante.\n\n" +
+                "\tTema: Gestão de um Restaurante\n\n" +
+                "Este projeto tem o objetivo de gerir informações relacionadas ao atendimento de clientes,\n" +
+                "permitindo o cadastro de clientes, marcação de horários, controle de pagamentos e muito mais.\n\n" +
+                "Este projeto foi desenvolvido no âmbito da cadeira de Fundamentos de Programação 2,\n" +
+                "no curso de Engenharia Informática da UCAN. É de uso exclusivo aos Recursos Humanos.\n\n" +
+                "Este sistema foi desenvolvido para facilitar o controlo e gestão da informação sobre os clientes do restaurante,\n" +
+                "permitindo localizar os dados de forma concisa, rápida e segura.\n\n" +
+                "Este projeto foi desenvolvido por Fernando Afonso Sebastião, estudante do 1º ano, ID: 34422.\n\n" +
+                "Se concorda com os termos e condições, clique em 'Concordo' para continuar."
+            );
 
-                add(concordarJCB = new JCheckBox("Concordo com os termos a seguir"));
+            add(concordarJCB = new JCheckBox("Concordo com os termos acima"));
 
-                concordarJCB.addActionListener(this);
-            }
+            concordarJCB.addActionListener(this);
+        }
 
-            public void actionPerformed(ActionEvent event)
-            {
-                if(event.getSource() == concordarJCB)
-                    if(concordarJCB.isSelected())
-                        sul.ativarBotao(true);
-                    else
-                        sul.ativarBotao(false);
-            }
+        public void actionPerformed(ActionEvent event)
+        {
+            if(event.getSource() == concordarJCB)
+                sul.ativarBotao(concordarJCB.isSelected());
+        }
     }
 
-    
     class PainelSul extends JPanel implements ActionListener
     {
         JButton entrarJB, sairJB;
+
         public PainelSul()
         {
             add(entrarJB = new JButton("Entrar", new ImageIcon("image/next24.png")));
             add(sairJB = new JButton("Sair", new ImageIcon("image/logout24.png")));
 
-            ativarBotao( false );
+            ativarBotao(false);
 
             entrarJB.addActionListener(this);
             sairJB.addActionListener(this);
@@ -98,16 +96,18 @@ public class ApresentacaoVisao extends JFrame
             if(event.getSource() == entrarJB)
             {
                 dispose();
-                new LoginVisao();
+                new LoginVisao(); // Chama a tela de login
             }
             else
-                dispose();
+            {
+                dispose(); // Fecha a tela se clicar em sair
+            }
         }
     }
 
     public static void main(String[] args)
     {
-        Vector_Tabelas.inic();
+        Vector_Tabelas.inic(); // Inicializa estruturas se necessário
         new ApresentacaoVisao();       
     }
 }

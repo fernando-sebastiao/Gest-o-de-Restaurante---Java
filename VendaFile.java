@@ -1,15 +1,9 @@
-/*------------------------------------
-Tema: Gestão de um Restaurante
-Nome: Fernando Afonso Sebastiao
-Numero: 34422
-Ficheiro: ClienteModelo.java
-Data: 10.07.2025
---------------------------------------*/
 
 import javax.swing.*;
 import SwingComponents.*;
 import Calendario.*;
 import java.io.*;
+import java.util.ArrayList;
 
 public class VendaFile extends ObjectsFile {
 
@@ -77,6 +71,43 @@ public class VendaFile extends ObjectsFile {
 		}
 	}
 
+	// Dentro da sua classe VendaFile, adicione:
+public ArrayList<VendaModelo> listarDados() {
+    ArrayList<VendaModelo> lista = new ArrayList<>();
+    try {
+        stream.seek(4); // Pula o cabeçalho do arquivo
+        for (int i = 0; i < getNregistos(); i++) {
+            VendaModelo vm = new VendaModelo();
+            vm.read(stream);
+            if (vm.getStatus()) {
+                lista.add(vm);
+            }
+        }
+    } catch (Exception ex) {
+        ex.printStackTrace();
+    }
+    return lista;
+}
+
+
+	public static VendaModelo getVendaPorNome(String nomeProcurado) {
+    VendaFile ficheiro = new VendaFile();
+    VendaModelo modelo = new VendaModelo();
+    try {
+        ficheiro.stream.seek(4);
+        for (int i = 0; i < ficheiro.getNregistos(); ++i) {
+            modelo.read(ficheiro.stream);
+            if (modelo.getStatus() && modelo.getNomeCliente().equalsIgnoreCase(nomeProcurado)) {
+                return modelo;
+            }
+        }
+    } catch (Exception ex) {
+        ex.printStackTrace();
+    }
+    return null;
+}
+
+
 	public static VendaModelo getVendaPorId(int idProcurado) {
 		VendaFile ficheiro = new VendaFile();
 		VendaModelo modelo = new VendaModelo();
@@ -92,46 +123,6 @@ public class VendaFile extends ObjectsFile {
 		}
 		return null;
 	}
-
-	public static VendaModelo getVendaPorNome(String nomeProcurado) {
-	VendaFile ficheiro = new VendaFile();
-	VendaModelo modelo = new VendaModelo();
-	try {
-		// fiicheiro.stream.seek(4);
-		for (int i = 0; i < ficheiro.getNregistos(); ++i) {
-			modelo.read(ficheiro.stream);
-			if (modelo.getStatus() && modelo.getNomeCliente().equalsIgnoreCase(nomeProcurado)) {
-				return modelo;
-			}
-		}
-	} catch (Exception ex) {
-		ex.printStackTrace();
-	}
-	return null;
-}
-
-public void eliminarDadosPorNome(String nomeProcurado) {
-    VendaModelo modeloAtual = new VendaModelo();
-    try {
-        stream.seek(4);
-        for (int i = 0; i < getNregistos(); ++i) {
-            long pos = stream.getFilePointer();
-            modeloAtual.read(stream);
-            if (modeloAtual.getStatus() && modeloAtual.getNomeCliente().equalsIgnoreCase(nomeProcurado)) {
-                modeloAtual.setStatus(false);
-                stream.seek(pos);
-                modeloAtual.write(stream);
-                JOptionPane.showMessageDialog(null, "Venda eliminada com sucesso pelo nome do cliente!");
-                return;
-            }
-        }
-        JOptionPane.showMessageDialog(null, "Nenhuma venda encontrada para o cliente informado.");
-    } catch (Exception ex) {
-        ex.printStackTrace();
-        JOptionPane.showMessageDialog(null, "Erro ao tentar eliminar venda pelo nome.");
-    }
-}
-
 
 	public static void pesquisarVendaPorId(int idProcurado) {
 		VendaModelo modelo = getVendaPorId(idProcurado);

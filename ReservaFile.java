@@ -10,6 +10,7 @@ import javax.swing.*;
 import SwingComponents.*;
 import Calendario.*;
 import java.io.*;
+import java.util.ArrayList;
 
 public class ReservaFile extends ObjectsFile {
 

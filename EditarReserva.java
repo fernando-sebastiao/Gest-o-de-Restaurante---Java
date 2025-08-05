@@ -1,11 +1,3 @@
-/*------------------------------------
-Tema: Gestão de um Restaurante
-Nome: Fernando Afonso Sebastiao
-Numero: 34422
-Ficheiro: EditarReserva.java
-Data: 10.07.2025
---------------------------------------*/
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -29,30 +21,61 @@ public class EditarReserva extends JFrame {
     }
 
     class PainelCentro extends JPanel implements ActionListener {
-        JComboBox clientesJCB;
-        JRadioButton pesquisarPorClienteJRB;
+        JRadioButton pesquisarPorClienteJRB, pesquisarPorIDJRB;
         ButtonGroup grupo;
+        JTextField clienteJTF, idJTF;
 
         public PainelCentro() {
-            setLayout(new GridLayout(2, 2, 10, 10));
+            setLayout(new GridLayout(3, 2, 10, 10));
 
             grupo = new ButtonGroup();
 
-            add(pesquisarPorClienteJRB = new JRadioButton("Pesquisar Por Cliente", true));
-            grupo.add(pesquisarPorClienteJRB);
+            pesquisarPorClienteJRB = new JRadioButton("Pesquisar Por Nome do Cliente", true);
+            pesquisarPorIDJRB = new JRadioButton("Pesquisar Por ID da Reserva");
 
-            add(new JLabel("Escolha o Cliente:"));
-            add(clientesJCB = new JComboBox(ReservaFile.getAllClientesReservas()));
+            grupo.add(pesquisarPorClienteJRB);
+            grupo.add(pesquisarPorIDJRB);
+
+            clienteJTF = new JTextField();
+            idJTF = new JTextField();
+            idJTF.setEnabled(false); // inicia desabilitado
+
+            add(pesquisarPorClienteJRB);
+            add(pesquisarPorIDJRB);
+
+            add(new JLabel("Nome do Cliente:"));
+            add(clienteJTF);
+
+            add(new JLabel("ID da Reserva:"));
+            add(idJTF);
 
             pesquisarPorClienteJRB.addActionListener(this);
+            pesquisarPorIDJRB.addActionListener(this);
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
-            // Somente um tipo de pesquisa (por cliente), nada a alterar
+            if (pesquisarPorClienteJRB.isSelected()) {
+                clienteJTF.setEnabled(true);
+                idJTF.setEnabled(false);
+                idJTF.setText("");
+            } else {
+                clienteJTF.setEnabled(false);
+                clienteJTF.setText("");
+                idJTF.setEnabled(true);
+            }
+        }
+
+        public boolean isPesquisaPorCliente() {
+            return pesquisarPorClienteJRB.isSelected();
         }
 
         public String getClienteProcurado() {
-            return String.valueOf(clientesJCB.getSelectedItem());
+            return clienteJTF.getText().trim();
+        }
+
+        public String getIDProcurado() {
+            return idJTF.getText().trim();
         }
     }
 
@@ -67,9 +90,32 @@ public class EditarReserva extends JFrame {
             cancelarJB.addActionListener(this);
         }
 
+        @Override
         public void actionPerformed(ActionEvent evt) {
             if (evt.getSource() == pesquisarJB) {
-                ReservaModelo modelo = ReservaFile.getReservaPorCliente(centro.getClienteProcurado());
+                ReservaModelo modelo = null;
+
+                if (centro.isPesquisaPorCliente()) {
+                    String cliente = centro.getClienteProcurado();
+                    if (cliente.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Por favor, digite o nome do cliente.");
+                        return;
+                    }
+                    modelo = ReservaFile.getReservaPorCliente(cliente);
+                } else {
+                    String idStr = centro.getIDProcurado();
+                    if (idStr.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Por favor, digite o ID da reserva.");
+                        return;
+                    }
+                    try {
+                        int id = Integer.parseInt(idStr);
+                        modelo = ReservaFile.getReservaPorId(id);
+                    } catch (NumberFormatException e) {
+                        JOptionPane.showMessageDialog(null, "ID inválido. Digite um número inteiro.");
+                        return;
+                    }
+                }
 
                 if (modelo != null) {
                     new ReservaVisao(true, modelo);

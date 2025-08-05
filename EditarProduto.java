@@ -1,11 +1,3 @@
-/*------------------------------------
-Tema: Gestão de um Restaurante
-Nome: Fernando Afonso Sebastiao
-Numero: 34422
-Ficheiro: EditarProduto.java
-Data: 10.07.2025
---------------------------------------*/
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -27,30 +19,66 @@ public class EditarProduto extends JFrame {
     }
 
     class PainelCentro extends JPanel implements ActionListener {
-        JComboBox produtosJCB;
-        JRadioButton pesquisarPorNomeJRB;
+        JRadioButton pesquisarPorNomeJRB, pesquisarPorIdJRB;
         ButtonGroup grupo;
+        JTextField nomeProdutoJTF, idProdutoJTF;
 
         public PainelCentro() {
-            setLayout(new GridLayout(2, 2, 10, 10));
+            setLayout(new GridLayout(3, 2, 10, 10));
 
             grupo = new ButtonGroup();
 
-            add(pesquisarPorNomeJRB = new JRadioButton("Pesquisar Por Nome do Produto", true));
+            pesquisarPorNomeJRB = new JRadioButton("Pesquisar por Nome do Produto", true);
+            pesquisarPorIdJRB = new JRadioButton("Pesquisar por ID do Produto");
+
             grupo.add(pesquisarPorNomeJRB);
+            grupo.add(pesquisarPorIdJRB);
 
-            add(new JLabel("Escolha o Produto:"));
-            add(produtosJCB = new JComboBox(ProdutoFile.getAllProdutos()));
+            nomeProdutoJTF = new JTextField();
+            idProdutoJTF = new JTextField();
+            idProdutoJTF.setEnabled(false); // Desabilitado inicialmente
 
+            add(pesquisarPorNomeJRB);
+            add(pesquisarPorIdJRB);
+
+            add(new JLabel("Nome do Produto:"));
+            add(nomeProdutoJTF);
+
+            add(new JLabel("ID do Produto:"));
+            add(idProdutoJTF);
+
+            // Escuta para habilitar/desabilitar os campos conforme rádio selecionado
             pesquisarPorNomeJRB.addActionListener(this);
+            pesquisarPorIdJRB.addActionListener(this);
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
-            // Apenas um tipo de pesquisa (por nome do produto), nenhuma ação necessária aqui
+            if (pesquisarPorNomeJRB.isSelected()) {
+                nomeProdutoJTF.setEnabled(true);
+                idProdutoJTF.setEnabled(false);
+                idProdutoJTF.setText("");
+            } else {
+                nomeProdutoJTF.setEnabled(false);
+                nomeProdutoJTF.setText("");
+                idProdutoJTF.setEnabled(true);
+            }
         }
 
-        public String getProdutoProcurado() {
-            return String.valueOf(produtosJCB.getSelectedItem());
+        public String getNomeProduto() {
+            return nomeProdutoJTF.getText().trim();
+        }
+
+        public int getIdProduto() {
+            try {
+                return Integer.parseInt(idProdutoJTF.getText().trim());
+            } catch (NumberFormatException e) {
+                return -1; // Indica id inválido
+            }
+        }
+
+        public boolean isPesquisaPorNome() {
+            return pesquisarPorNomeJRB.isSelected();
         }
     }
 
@@ -65,9 +93,26 @@ public class EditarProduto extends JFrame {
             cancelarJB.addActionListener(this);
         }
 
+        @Override
         public void actionPerformed(ActionEvent evt) {
             if (evt.getSource() == pesquisarJB) {
-                ProdutoModelo modelo = ProdutoFile.getProdutoPorNome(centro.getProdutoProcurado());
+                ProdutoModelo modelo = null;
+
+                if (centro.isPesquisaPorNome()) {
+                    String nome = centro.getNomeProduto();
+                    if (nome.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Por favor, digite o nome do produto.");
+                        return;
+                    }
+                    modelo = ProdutoFile.getProdutoPorNome(nome);
+                } else {
+                    int id = centro.getIdProduto();
+                    if (id == -1) {
+                        JOptionPane.showMessageDialog(null, "Por favor, digite um ID válido.");
+                        return;
+                    }
+                    modelo = ProdutoFile.getProdutoPorId(id);
+                }
 
                 if (modelo != null) {
                     new ProdutoVisao(true, modelo);

@@ -1,17 +1,11 @@
-/*------------------------------------
-Tema: Gestão de um Restaurante
-Nome: Fernando Afonso Sebastiao
-Numero: 34422
-Ficheiro: VendaVisao.java
-Data: 10.07.2025
---------------------------------------*/
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.UIManager.*;
+import javax.swing.table.DefaultTableModel;
 import SwingComponents.*;
 import Calendario.*;
+import java.util.ArrayList;
 
 public class VendaVisao extends JFrame {
     private PainelCentro centro;
@@ -40,51 +34,87 @@ public class VendaVisao extends JFrame {
     }
 
     class PainelCentro extends JPanel {
-        private JTextField idJTF, quantidadeJTF, valorTotalJTF, nomeClienteJTF;
-        private JComboBoxPersonal  nomeProdutoJCB, formaPagamentoJCB, funcionarioJCB;
+        private JTextField idJTF, quantidadeJTF, valorTotalJTF;
+        private JComboBoxPersonal nomeClienteJCB, nomeProdutoJCB, formaPagamentoJCB, funcionarioJCB;
         private JTextFieldData txtData;
         private VendaFile vendaFile;
 
+        private JTable tabela;
+        private DefaultTableModel modeloTabela;
+        private JButton btnEditar, btnEliminar;
+
         public PainelCentro() {
-            setLayout(new GridLayout(5, 4, 10, 5));
+            setLayout(new BorderLayout(10, 10));
+
             vendaFile = new VendaFile();
 
-            add(new JLabel("ID:"));
-            add(idJTF = new JTextField("000" + vendaFile.getProximoCodigo()));
+            // Painel do formulário
+            JPanel painelForm = new JPanel(new GridLayout(5, 4, 10, 5));
+
+            painelForm.add(new JLabel("ID:"));
+            painelForm.add(idJTF = new JTextField("000" + vendaFile.getProximoCodigo()));
             idJTF.setFocusable(false);
 
-            add(new JLabel("Cliente:"));
-            add(nomeClienteJTF = new JTextField());
+            painelForm.add(new JLabel("Cliente:"));
+            painelForm.add(nomeClienteJCB = UInterfaceBox.createJComboBoxsTabela2("NomeCLiente.tab"));
 
-            add(new JLabel("Produto:"));
-            add(nomeProdutoJCB = UInterfaceBox.createJComboBoxsTabela2("NomeProduto.tab"));
+            painelForm.add(new JLabel("Produto:"));
+            painelForm.add(nomeProdutoJCB = UInterfaceBox.createJComboBoxsTabela2("NomeProduto.tab"));
 
-            add(new JLabel("Quantidade:"));
-            add(quantidadeJTF = new JTextField());
+            painelForm.add(new JLabel("Quantidade:"));
+            painelForm.add(quantidadeJTF = new JTextField());
 
-            add(new JLabel("Forma de Pagamento:"));
-            add(formaPagamentoJCB = UInterfaceBox.createJComboBoxsTabela2("MetodoPagamento.tab"));
+            painelForm.add(new JLabel("Forma de Pagamento:"));
+            painelForm.add(formaPagamentoJCB = UInterfaceBox.createJComboBoxsTabela2("MetodoPagamento.tab"));
 
-            add(new JLabel("Funcionário:"));
-            add(funcionarioJCB = UInterfaceBox.createJComboBoxsTabela2("NomeFuncionario.tab"));
+            painelForm.add(new JLabel("Funcionário:"));
+            painelForm.add(funcionarioJCB = UInterfaceBox.createJComboBoxsTabela2("NomeFuncionario.tab"));
 
-            add(new JLabel("Data da Venda:"));
+            painelForm.add(new JLabel("Data da Venda:"));
             JPanel painelData = new JPanel(new GridLayout(1, 1));
             txtData = new JTextFieldData("Data?");
             painelData.add(txtData.getDTestField());
             painelData.add(txtData.getDButton());
-            add(painelData);
+            painelForm.add(painelData);
 
-            add(new JLabel("Valor Total:"));
-            add(valorTotalJTF = new JTextField());
+            painelForm.add(new JLabel("Valor Total:"));
+            painelForm.add(valorTotalJTF = new JTextField());
+
+            add(painelForm, BorderLayout.NORTH);
+
+            // Tabela
+            String[] colunas = { "ID", "Cliente", "Produto", "Quantidade", "Pagamento", "Funcionário", "Data", "Valor Total" };
+            modeloTabela = new DefaultTableModel(colunas, 0) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false; // Desabilita edição direta
+                }
+            };
+            tabela = new JTable(modeloTabela);
+            tabela.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+            JScrollPane scroll = new JScrollPane(tabela);
+            scroll.setBorder(BorderFactory.createTitledBorder("Lista de Vendas"));
+            add(scroll, BorderLayout.CENTER);
+
+            // Painel dos botões editar e eliminar
+            JPanel painelBotoes = new JPanel();
+            btnEditar = new JButton("Editar");
+            btnEliminar = new JButton("Eliminar");
+            painelBotoes.add(btnEditar);
+            painelBotoes.add(btnEliminar);
+            add(painelBotoes, BorderLayout.SOUTH);
+
+            carregarDadosTabela();
+
+            // Ações dos botões
+            btnEditar.addActionListener(e -> editarVenda());
+            btnEliminar.addActionListener(e -> eliminarVenda());
         }
 
         public PainelCentro(VendaModelo modelo) {
             this();
             idJTF.setText("000" + modelo.getId());
-            add(new JLabel("Nome Cliente"));
-            add(nomeClienteJTF = new JTextField());
-            nomeClienteJTF.setText(modelo.getNomeCliente());
+            nomeClienteJCB.setSelectedItem(modelo.getNomeCliente());
             nomeProdutoJCB.setSelectedItem(modelo.getNomeProduto());
             quantidadeJTF.setText(String.valueOf(modelo.getQuantidade()));
             formaPagamentoJCB.setSelectedItem(modelo.getFormaPagamento());
@@ -93,8 +123,8 @@ public class VendaVisao extends JFrame {
             valorTotalJTF.setText(String.valueOf(modelo.getValorTotal()));
         }
 
-        public int getId() { return Integer.parseInt(idJTF.getText().trim()); }
-        public String getNomeCliente() { return nomeClienteJTF.getText().trim(); }
+        public int getId() { return Integer.parseInt(idJTF.getText().trim().replaceFirst("^0+", "")); }
+        public String getNomeCliente() { return String.valueOf(nomeClienteJCB.getSelectedItem()); }
         public String getNomeProduto() { return String.valueOf(nomeProdutoJCB.getSelectedItem()); }
         public int getQuantidade() { return Integer.parseInt(quantidadeJTF.getText().trim()); }
         public String getFormaPagamento() { return String.valueOf(formaPagamentoJCB.getSelectedItem()); }
@@ -107,8 +137,9 @@ public class VendaVisao extends JFrame {
                 getId(), getNomeCliente(), getNomeProduto(), getQuantidade(),
                 getFormaPagamento(), getFuncionario(), getDataVenda(), getValorTotal()
             );
-            JOptionPane.showMessageDialog(null, modelo.toString());
             modelo.salvar();
+            JOptionPane.showMessageDialog(null, "Venda salva com sucesso!");
+            carregarDadosTabela();
             dispose();
         }
 
@@ -117,9 +148,68 @@ public class VendaVisao extends JFrame {
                 getId(), getNomeCliente(), getNomeProduto(), getQuantidade(),
                 getFormaPagamento(), getFuncionario(), getDataVenda(), getValorTotal()
             );
-            JOptionPane.showMessageDialog(null, modelo.toString());
             modelo.salvarDados();
+            JOptionPane.showMessageDialog(null, "Venda alterada com sucesso!");
+            carregarDadosTabela();
             dispose();
+        }
+
+        private void carregarDadosTabela() {
+            modeloTabela.setRowCount(0);
+            ArrayList<VendaModelo> lista = vendaFile.listarDados();
+            for (VendaModelo vm : lista) {
+                Object[] linha = {
+                    vm.getId(),
+                    vm.getNomeCliente(),
+                    vm.getNomeProduto(),
+                    vm.getQuantidade(),
+                    vm.getFormaPagamento(),
+                    vm.getFuncionario(),
+                    vm.getDataVenda(),
+                    vm.getValorTotal()
+                };
+                modeloTabela.addRow(linha);
+            }
+        }
+
+        private void editarVenda() {
+            int linhaSelecionada = tabela.getSelectedRow();
+            if (linhaSelecionada == -1) {
+                JOptionPane.showMessageDialog(null, "Selecione uma venda para editar.");
+                return;
+            }
+
+            int idVenda = (int) modeloTabela.getValueAt(linhaSelecionada, 0);
+            VendaModelo vm = VendaFile.getVendaPorId(idVenda);
+            if (vm == null) {
+                JOptionPane.showMessageDialog(null, "Venda não encontrada.");
+                return;
+            }
+            // Abre nova janela de edição
+            new VendaVisao(true, vm);
+            dispose();
+        }
+
+        private void eliminarVenda() {
+            int linhaSelecionada = tabela.getSelectedRow();
+            if (linhaSelecionada == -1) {
+                JOptionPane.showMessageDialog(null, "Selecione uma venda para eliminar.");
+                return;
+            }
+
+            int idVenda = (int) modeloTabela.getValueAt(linhaSelecionada, 0);
+            VendaModelo vm = VendaFile.getVendaPorId(idVenda);
+            if (vm == null) {
+                JOptionPane.showMessageDialog(null, "Venda não encontrada.");
+                return;
+            }
+
+            int confirm = JOptionPane.showConfirmDialog(null, "Confirma eliminar esta venda?", "Confirmar", JOptionPane.YES_NO_OPTION);
+            if (confirm == JOptionPane.YES_OPTION) {
+                VendaFile vf = new VendaFile();
+                vf.eliminarDados(vm);
+                carregarDadosTabela();
+            }
         }
     }
 
@@ -156,6 +246,8 @@ public class VendaVisao extends JFrame {
                     break;
                 }
             }
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            // ignorar exceções
+        }
     }
 }
