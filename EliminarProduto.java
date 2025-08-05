@@ -7,8 +7,8 @@ Data: 10.07.2025
 --------------------------------------*/
 
 import javax.swing.*;
-import java.awt.event.*;
 import java.awt.*;
+import java.awt.event.*;
 import SwingComponents.*;
 
 public class EliminarProduto extends JFrame {
@@ -27,31 +27,26 @@ public class EliminarProduto extends JFrame {
         setVisible(true);
     }
 
-    class PainelCentro extends JPanel implements ActionListener {
-        JComboBox produtosJCB;
-        JRadioButton pesquisarPorNomeJRB;
-        ButtonGroup group;
+    class PainelCentro extends JPanel {
+        JTextField nomeProdutoTF;
+        JTextField idProdutoTF;
 
         public PainelCentro() {
-            setLayout(new GridLayout(2, 2, 10, 10));
+            setLayout(new GridLayout(4, 1, 10, 10));
 
-            group = new ButtonGroup();
+            add(new JLabel("Digite o ID do Produto:"));
+            add(idProdutoTF = new JTextField(20));
 
-            add(pesquisarPorNomeJRB = new JRadioButton("Pesquisar por Nome do Produto", true));
-            group.add(pesquisarPorNomeJRB);
-
-            add(new JLabel("Escolha o Produto"));
-            add(produtosJCB = new JComboBox(ProdutoFile.getAllProdutos()));
-
-            pesquisarPorNomeJRB.addActionListener(this);
+            add(new JLabel("Ou digite o Nome do Produto:"));
+            add(nomeProdutoTF = new JTextField(20));
         }
 
-        public void actionPerformed(ActionEvent evt) {
-            // Apenas uma forma de pesquisa, nada a fazer aqui
+        public String getProdutoNome() {
+            return nomeProdutoTF.getText().trim();
         }
 
-        public String getProdutoProcurado() {
-            return String.valueOf(produtosJCB.getSelectedItem());
+        public String getProdutoId() {
+            return idProdutoTF.getText().trim();
         }
     }
 
@@ -68,7 +63,25 @@ public class EliminarProduto extends JFrame {
 
         public void actionPerformed(ActionEvent evt) {
             if (evt.getSource() == eliminarJB) {
-                ProdutoModelo modelo = ProdutoFile.getProdutoPorNome(centro.getProdutoProcurado());
+                String idText = centro.getProdutoId();
+                String nome = centro.getProdutoNome();
+
+                ProdutoModelo modelo = null;
+
+                if (!idText.isEmpty()) {
+                    try {
+                        int id = Integer.parseInt(idText);
+                        modelo = ProdutoFile.getProdutoPorId(id);
+                    } catch (NumberFormatException e) {
+                        JOptionPane.showMessageDialog(null, "ID inválido. Digite apenas números.");
+                        return;
+                    }
+                } else if (!nome.isEmpty()) {
+                    modelo = ProdutoFile.getProdutoPorNome(nome);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Por favor, digite o ID ou o nome do produto.");
+                    return;
+                }
 
                 if (modelo != null && modelo.getStatus()) {
                     JOptionPane.showMessageDialog(null, modelo.toString());

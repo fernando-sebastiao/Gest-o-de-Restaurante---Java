@@ -2,8 +2,8 @@
 Tema: Gestão de um Restaurante
 Nome: Fernando Afonso Sebastiao
 Numero: 34422
-Ficheiro: ClienteModelo.java
-Data: 10.07.2025
+Ficheiro: PesquisarProduto.java
+Data: 04.08.2025
 --------------------------------------*/
 
 import javax.swing.*;
@@ -27,17 +27,18 @@ public class PesquisarProduto extends JFrame {
     }
 
     class PainelCentro extends JPanel {
-        JComboBox produtosJCB;
+        private JTextField nomeProdutoTF;
 
         public PainelCentro() {
             setLayout(new GridLayout(1, 2, 10, 10));
 
-            add(new JLabel("Escolha o Produto:"));
-            add(produtosJCB = new JComboBox(ProdutoFile.getAllProdutos()));
+            add(new JLabel("Nome do Produto:"));
+            nomeProdutoTF = new JTextField(20);
+            add(nomeProdutoTF);
         }
 
         public String getProdutoProcurado() {
-            return String.valueOf(produtosJCB.getSelectedItem());
+            return nomeProdutoTF.getText().trim();
         }
     }
 
@@ -54,7 +55,8 @@ public class PesquisarProduto extends JFrame {
 
         public void actionPerformed(ActionEvent evt) {
             if (evt.getSource() == pesquisarJB) {
-                ProdutoModelo modelo = ProdutoFile.getProdutoPorNome(centro.getProdutoProcurado());
+                String nome = centro.getProdutoProcurado();
+                ProdutoModelo modelo = ProdutoFile.getProdutoPorNome(nome);
 
                 if (modelo != null && modelo.getStatus()) {
                     JOptionPane.showMessageDialog(null, modelo.toString(), "Produto Encontrado", JOptionPane.INFORMATION_MESSAGE);

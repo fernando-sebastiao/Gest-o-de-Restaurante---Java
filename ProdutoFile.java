@@ -79,6 +79,25 @@ public class ProdutoFile extends ObjectsFile {
 		}
 	}
 
+	public static ProdutoModelo getProdutoPorId(int idProcurado) {
+    ProdutoFile ficheiro = new ProdutoFile();
+    ProdutoModelo modelo = new ProdutoModelo();
+
+    try {
+        ficheiro.stream.seek(4); // pular o cabeçalho/contador, se existir
+        for (int i = 0; i < ficheiro.getNregistos(); ++i) {
+            modelo.read(ficheiro.stream);
+            if (modelo.getStatus() && modelo.getId() == idProcurado) {
+                return modelo;
+            }
+        }
+    } catch (Exception ex) {
+        ex.printStackTrace();
+    }
+    return null;
+}
+
+
 	// Buscar produto por nome
 	public static ProdutoModelo getProdutoPorNome(String nomeProcurado) {
 		ProdutoFile ficheiro = new ProdutoFile();
