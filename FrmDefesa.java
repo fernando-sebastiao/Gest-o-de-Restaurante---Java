@@ -21,7 +21,7 @@ public class FrmDefesa extends JFrame {
         JPanel painelPesquisa = new JPanel(new FlowLayout(FlowLayout.LEFT));
         pesquisarTF = new JTextField(20);
         pesquisarJB = new JButton("Pesquisar");
-        painelPesquisa.add(new JLabel("Pesquisar Cliente:"));
+        painelPesquisa.add(new JLabel("Pesquisar Defesa:"));
         painelPesquisa.add(pesquisarTF);
         painelPesquisa.add(pesquisarJB);
 
