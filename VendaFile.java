@@ -3,6 +3,7 @@ import javax.swing.*;
 import SwingComponents.*;
 import Calendario.*;
 import java.io.*;
+import java.util.ArrayList;
 
 public class VendaFile extends ObjectsFile {
 
@@ -69,6 +70,25 @@ public class VendaFile extends ObjectsFile {
 			ex.printStackTrace();
 		}
 	}
+
+	// Dentro da sua classe VendaFile, adicione:
+public ArrayList<VendaModelo> listarDados() {
+    ArrayList<VendaModelo> lista = new ArrayList<>();
+    try {
+        stream.seek(4); // Pula o cabeçalho do arquivo
+        for (int i = 0; i < getNregistos(); i++) {
+            VendaModelo vm = new VendaModelo();
+            vm.read(stream);
+            if (vm.getStatus()) {
+                lista.add(vm);
+            }
+        }
+    } catch (Exception ex) {
+        ex.printStackTrace();
+    }
+    return lista;
+}
+
 
 	public static VendaModelo getVendaPorNome(String nomeProcurado) {
     VendaFile ficheiro = new VendaFile();
